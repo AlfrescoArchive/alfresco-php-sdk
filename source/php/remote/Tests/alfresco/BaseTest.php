@@ -18,12 +18,12 @@
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
  
-require_once('PHPUnit2/Framework/TestCase.php');
+require_once('PHPUnit/Framework/TestCase.php');
 require_once('Alfresco/Service/Session.php');
 require_once('Alfresco/Service/Repository.php');
 require_once('Alfresco/Service/Store.php');
 
-class BaseTest extends PHPUnit2_Framework_TestCase
+class BaseTest extends PHPUnit_Framework_TestCase
 {
    const USERNAME = "admin";
    const PASSWORD = "admin";

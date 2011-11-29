@@ -27,6 +27,8 @@
    <!-- ** PHP SDK Project ** -->
    <!-- ******************************** -->
 
+   <!-- TODO clean up AMP build scripts and dependancies 
+   
    <target name="incremental-php" 
            depends="package-php" />
 
@@ -87,7 +89,7 @@
                      prefix="lib">
             <exclude name="**/source/**"/>
          </zipfileset>
-	 <zipfileset dir="${dir.module.php.web.php}/Examples"
+	     <zipfileset dir="${dir.module.php.web.php}/Examples"
                      prefix="web/php/Examples"/>
          <zipfileset dir="${dir.module.php.config}" 
                      prefix="config">
@@ -96,16 +98,6 @@
       </zip>
    </target>
 
-   <target name="test-php" 
-           depends="compile-php">
-      <run-tests projectdir="${dir.module.php}" />
-   </target>
-
-   <target name="generate-javadocs-php" 
-           depends="init">
-      <generate-javadocs documenttitle="Alfresco Records Management Extension" 
-                         windowtitle="Records Management" 
-                         projectdir="${dir.module.php}"/>
-   </target>
+   -->
    
 </project>
