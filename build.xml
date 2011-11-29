@@ -4,20 +4,24 @@
 	<dirname property="PHP.basedir" file="${ant.file.PHP}"/>
 	
 	<!-- Import -->
-    <import file="${PHP.basedir}/utils.xml" />
+   <!-- <import file="${PHP.basedir}/utils.xml" /> -->
     
-	<!-- Set properties -->
-	<property environment="env" />
-	<property file="${PHP.basedir}/build.properties" />
+	<target name="init">
 	
-	<!-- Compile classpath -->
-	<path id="classpath.compile">
-         <fileset dir="alfresco/war/WEB-INF/lib">
-            <include name="**/*.jar" />
-            <!-- Avoid compile-time dependencies against optional components, e.g. log4j -->
-            <exclude name="optional/**" />
-         </fileset>
-      </path>
+		<!-- Set properties -->
+		<property environment="env" />
+		<property file="${PHP.basedir}/build.properties" />
+		
+		<!-- Compile classpath -->
+		<path id="classpath.compile">
+			 <fileset dir="alfresco/war/WEB-INF/lib">
+				<include name="**/*.jar" />
+				<!-- Avoid compile-time dependencies against optional components, e.g. log4j -->
+				<exclude name="optional/**" />
+			 </fileset>
+		</path>
+		 
+	</target>
 	  
    <!-- ******************************** -->
    <!-- ** PHP SDK Project ** -->
