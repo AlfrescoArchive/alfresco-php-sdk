@@ -24,6 +24,6 @@ if($historyUtil->isCacheAvailable()) {
 } else {
 	?>
 		<span style="float: left; width: auto;">History not available - ensure <code>/assets/</code> is writable</span>
-	<?
+	<?php
 }
 ?>

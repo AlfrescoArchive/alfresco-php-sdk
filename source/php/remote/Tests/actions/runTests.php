@@ -11,7 +11,7 @@ if(isSet($_POST['testClasses']) && strlen(trim($_POST['testClasses']))) {
 		require_once 'util/Formatter.php';
 		
 		// create the test suite
-		$suite = new PHPUnit2_Framework_TestSuite();
+		$suite = new PHPUnit_Framework_TestSuite();
 		
 		foreach($testClasses as $testClass) {
 			if(file_exists($testClass).'.php') {

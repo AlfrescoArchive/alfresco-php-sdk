@@ -35,7 +35,8 @@ define('TEST_SUCCESS', 1);
 define('TEST_INCOMPLETE', 2);
 /**#@-*/
 
-class util_Formatter implements PHPUnit2_Framework_TestListener {
+class util_Formatter implements PHPUnit_Framework_TestListener 
+{
 	/**
 	 * Holds array of suites and total number of tests run
 	 * @var array
@@ -102,7 +103,7 @@ class util_Formatter implements PHPUnit2_Framework_TestListener {
 	 * @param obj PHPUnit2_Framework_TestSuite, the suite that is been run
 	 * @return void
 	 */
-	public function startTestSuite( PHPUnit2_Framework_TestSuite $suite) {
+	public function startTestSuite( PHPUnit_Framework_TestSuite $suite) {
 		if(strlen($suite->getName())) {
 	    	$this->currentSuite = array(
 	    		'suite'      => $suite,  // the test suite
@@ -121,8 +122,8 @@ class util_Formatter implements PHPUnit2_Framework_TestListener {
 	 * @param obj PHPUnit2_Framework_Test, the test that is being run
 	 * @return void
 	 */
-	public function startTest(PHPUnit2_Framework_Test $test) {
-		if($test instanceof PHPUnit2_Framework_TestCase) {
+	public function startTest(PHPUnit_Framework_Test $test) {
+		if($test instanceof PHPUnit_Framework_TestCase) {
 			$this->currentTest = array(
 				'name'        => preg_replace('(\(.*\))', '', $test->toString()), // the name of the test (without the suite name)
 				'timeElapsed' => 0,                // execution time of the test
@@ -144,7 +145,7 @@ class util_Formatter implements PHPUnit2_Framework_TestListener {
 	 * @param obj PHPUnit2_Framework_AssertationFailedError, PHPUnit2 error
 	 * @return void
 	 */
-	public function addFailure(PHPUnit2_Framework_Test $test, PHPUnit2_Framework_AssertionFailedError $e) {
+	public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time) {
 		$this->currentSuite['failures']++;
 		$this->currentTest['status'] = TEST_FAILURE;
 		$this->currentTest['message'] = $e->toString();
@@ -160,7 +161,7 @@ class util_Formatter implements PHPUnit2_Framework_TestListener {
 	 * @param obj PHPUnit2_Framework_AssertationFailedError, PHPUnit2 error
 	 * @return void
 	 */
-	public function addError(PHPUnit2_Framework_Test $test, Exception $e) {
+	public function addError(PHPUnit_Framework_Test $test, Exception $e, $time) {
 		$this->currentSuite['errors']++;
 		$this->currentTest['status'] = TEST_ERROR;
 		$this->currentTest['message'] = $e->getMessage();
@@ -176,13 +177,22 @@ class util_Formatter implements PHPUnit2_Framework_TestListener {
 	 * @param obj PHPUnit2_Framework_AssertationFailedError, PHPUnit2 error
 	 * @return void
 	 */
-	public function addIncompleteTest(PHPUnit2_Framework_Test $test, Exception $e) {
+	public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time) 
+	{
 		$this->currentSuite['incomplete']++;
 		$this->currentTest['status'] = TEST_INCOMPLETE;
 		$this->currentTest['message'] = $e->toString();
 		$this->currentTest['exception'] = $this->getTestException($test, $e);
 	}
     
+	public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+	{
+		$this->currentSuite['skipped']++;
+		$this->currentTest['status'] = TEST_INCOMPLETE;
+		$this->currentTest['message'] = $e->toString();
+		$this->currentTest['exception'] = $this->getTestException($test, $e);
+	}
+	
     /**
 	 * Upon completion of a test, records the execution time (if available) and adds the test to 
 	 * the tests performed in the current suite.
@@ -191,7 +201,7 @@ class util_Formatter implements PHPUnit2_Framework_TestListener {
 	 * @param obj PHPUnit2_Framework_Test, current test that is being run
 	 * @return void
 	 */
-	public function endTest( PHPUnit2_Framework_Test $test) {
+	public function endTest( PHPUnit_Framework_Test $test, $time) {
 		if($this->hasTimer) {
 			$this->timer->stop();
 			$this->currentTest['timeElapsed'] = $this->timer->timeElapsed();
@@ -206,7 +216,7 @@ class util_Formatter implements PHPUnit2_Framework_TestListener {
 	 * @param obj PHPUnit2_Framework_TestSuite, current suite that is being run
 	 * @return void
 	 */
-	public function endTestSuite( PHPUnit2_Framework_TestSuite $suite) {
+	public function endTestSuite( PHPUnit_Framework_TestSuite $suite) {
 		if(strlen($suite->getName())) {
 			array_push($this->suiteResults['suites'], $this->currentSuite);
 		}
@@ -221,7 +231,7 @@ class util_Formatter implements PHPUnit2_Framework_TestListener {
 	 * @param obj PHPUnit2_Framework_AssertationFailedError, PHPUnit2 error
 	 * @return array
 	 */
-	private function getTestException(PHPUnit2_Framework_Test $test, Exception $e) {
+	private function getTestException(PHPUnit_Framework_Test $test, Exception $e) {
 		// get the name of the testFile from the test
 		$testName = ereg_replace('(.*)\((.*[^)])\)', '\\2', $test->toString());
 		$trace = $e->getTrace();
