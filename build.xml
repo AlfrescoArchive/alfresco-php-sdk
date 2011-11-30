@@ -26,13 +26,13 @@
 		<echo>Packaging Alfresco PHP library</echo>
 		<mkdir dir="${php.dist.dir}" />
 		<zip destfile="${php.dist.dir}/${php.dist.phplib.name}.zip">
-			<zipfileset dir="${php.api.dir}"
+			<zipfileset dir="${php.phplib.api.dir}"
 						prefix="alfresco-php-library"/>
 		</zip>
 		<tar destfile="${php.dist.dir}/${php.dist.phplib.name}.tar.gz"
 			longfile="gnu"
 			compression="gzip">
-			<tarfileset dir="${php.api.dir}"
+			<tarfileset dir="${php.phplib.api.dir}"
 						prefix="alfresco-php-library"/>
 		</tar>
    </target>
