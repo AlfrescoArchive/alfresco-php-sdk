@@ -10,40 +10,40 @@
 
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
-if( defined( 'MW_INSTALL_PATH' ) ) {
+if (defined('MW_INSTALL_PATH')) {
 	$IP = MW_INSTALL_PATH;
 } else {
-	$IP = dirname( __FILE__ );
+	$IP = dirname(__FILE__);
 }
 
-$path = array( $IP, "$IP/includes", "$IP/languages" );
-set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
+$path = array($IP, "$IP/includes", "$IP/languages");
+set_include_path(implode(PATH_SEPARATOR, $path) . PATH_SEPARATOR . get_include_path());
 
-require_once( "includes/DefaultSettings.php" );
+require_once("includes/DefaultSettings.php");
 
 # If PHP's memory limit is very low, some operations may fail.
 # ini_set( 'memory_limit', '20M' );
 
-if ( $wgCommandLineMode ) {
-	if ( isset( $_SERVER ) && array_key_exists( 'REQUEST_METHOD', $_SERVER ) ) {
-		die( "This script must be run from the command line\n" );
+if ($wgCommandLineMode) {
+	if (isset($_SERVER) && array_key_exists('REQUEST_METHOD', $_SERVER)) {
+		die("This script must be run from the command line\n");
 	}
-} elseif ( empty( $wgNoOutputBuffer ) ) {
+} elseif (empty($wgNoOutputBuffer)) {
 	## Compress output if the browser supports it
-	if( !ini_get( 'zlib.output_compression' ) ) @ob_start( 'ob_gzhandler' );
+	if (!ini_get('zlib.output_compression')) @ob_start('ob_gzhandler');
 }
 
-$wgSitename         = "Alfresco Wiki";
+$wgSitename = "Alfresco Wiki";
 
 ## The URL base path to the directory containing the wiki;
 ## defaults for all runtime URL paths are based off of this.
-$wgScriptPath       = "/alfresco/php/wiki";
+$wgScriptPath = "/alfresco/php/wiki";
 
 ## For more information on customizing the URLs please see:
 ## http://www.mediawiki.org/wiki/Manual:Short_URL
 
-$wgEnableEmail      = true;
-$wgEnableUserEmail  = true;
+$wgEnableEmail = true;
+$wgEnableUserEmail = true;
 
 $wgEmergencyContact = "root@localhost";
 $wgPasswordSender = "root@localhost";
@@ -57,17 +57,17 @@ $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
 
-$wgDBtype           = "mysql";
-$wgDBserver         = "localhost";
-$wgDBname           = "alfresco";
-$wgDBuser           = "alfresco";
-$wgDBpassword       = "alfresco";
-$wgDBport           = "5432";
-$wgDBprefix         = "mediawiki2_";
+$wgDBtype = "mysql";
+$wgDBserver = "localhost";
+$wgDBname = "alfresco";
+$wgDBuser = "alfresco";
+$wgDBpassword = "alfresco";
+$wgDBport = "5432";
+$wgDBprefix = "mediawiki2_";
 
 # Schemas for Postgres
-$wgDBmwschema       = "mediawiki";
-$wgDBts2schema      = "public";
+$wgDBmwschema = "mediawiki";
+$wgDBts2schema = "public";
 
 # Experimental charset support for MySQL 4.1/5.0.
 $wgDBmysql5 = false;
@@ -78,8 +78,8 @@ $wgMemCachedServers = array();
 
 ## To enable image uploads, make sure the 'images' directory
 ## is writable, then set this to true:
-$wgEnableUploads       = false;
-$wgUseImageResize      = true;
+$wgEnableUploads = false;
+$wgUseImageResize = true;
 # $wgUseImageMagick = true;
 # $wgImageMagickConvertCommand = "/usr/bin/convert";
 
@@ -91,9 +91,9 @@ $wgUseImageResize      = true;
 
 ## If you have the appropriate support software installed
 ## you can enable inline LaTeX equations:
-$wgUseTeX           = false;
+$wgUseTeX = false;
 
-$wgLocalInterwiki   = $wgSitename;
+$wgLocalInterwiki = $wgSitename;
 
 $wgLanguageCode = "en";
 
@@ -117,11 +117,11 @@ $wgDiff3 = "";
 
 # When you make changes to this configuration file, this will make
 # sure that cached pages are cleared.
-$configdate = gmdate( 'YmdHis', @filemtime( __FILE__ ) );
-$wgCacheEpoch = max( $wgCacheEpoch, $configdate );
+$configdate = gmdate('YmdHis', @filemtime(__FILE__));
+$wgCacheEpoch = max($wgCacheEpoch, $configdate);
 
 # Alfresco extension
 $wgUsePathInfo = false;
 require_once("extensions/alfresco-integration/Alfresco.php");
-	
+
 ?>

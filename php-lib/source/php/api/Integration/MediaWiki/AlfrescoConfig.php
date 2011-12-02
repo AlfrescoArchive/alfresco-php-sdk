@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2005-2010 Alfresco Software Limited.
+ * Copyright (C) 2005-2011 Alfresco Software Limited.
  *
  * This file is part of Alfresco
  *
@@ -17,20 +17,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
- 
- $alfDebug = true;
- 
- /** The web service end point that will be used when accessing the Alfresco repository **/
- $alfURL = "http://localhost:8080/alfresco/api";
- 
- /** Store that should be used to store the wiki content in **/
- $alfWikiStore = "workspace://SpacesStore";
- 
- /** Path to the space the contains the wiki content **/
- $alfWikiSpace = "app:company_home/cm:Wiki";
- 
- /** User credentails used to connect to Alfresco with **/
- $alfUser = "admin";
- $alfPassword = "admin";
- 
+
+$alfDebug = true;
+
+/** The web service end point that will be used when accessing the Alfresco repository **/
+$alfURL = 'http://localhost:8080/alfresco/api';
+
+/** Store that should be used to store the wiki content in **/
+$alfWikiStore = 'workspace://SpacesStore';
+
+/** Path to the space the contains the wiki content **/
+$alfWikiSpace = 'app:company_home/cm:Wiki';
+
+/** User credentails used to connect to Alfresco with **/
+$alfUser = 'admin';
+$alfPassword = 'admin';
+
 ?>
