@@ -183,7 +183,7 @@ class ExternalStoreAlfresco {
 		$ns = $titleObject->getNamespace();
 		if ($ns != NS_MAIN) {
 			// lookup the display name of the namespace
-			$title = Namespace::getCanonicalName($ns) . " - " . $title;
+			$title = MWNamespace::getCanonicalName($ns) . " - " . $title;
 		}
 		return $title;
 	}
