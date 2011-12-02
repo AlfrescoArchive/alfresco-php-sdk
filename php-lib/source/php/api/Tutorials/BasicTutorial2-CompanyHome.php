@@ -18,18 +18,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 	/**
 	 * Basic Tutorial Two - Company Home
-	 * 
+	 *
 	 * In the tutorial we will get a reference to the company home node.
-	 * 
-	 * A discusion of this tutorial can be found at http://wiki.alfresco.com/wiki/PHP_Tutorial_Two
-	 * 
+	 *
+	 * A discussion of this tutorial can be found at http://wiki.alfresco.com/wiki/PHP_Tutorial_Two
+	 *
 	 * Note: any changes to this file should be uploaded to the wiki
-	 */ 
-  
-	// Include the required Alfresco PHP API objects  
+	 */
+
+	// Include the required Alfresco PHP API objects
 	if (isset($_SERVER["ALF_AVAILABLE"]) == false)
     {
 	   require_once "Alfresco/Service/Repository.php";
@@ -40,18 +40,18 @@
 	// Specify the connection details
 	$repositoryUrl = "http://localhost:8080/alfresco/api";
 	$userName = "admin";
-	$password = "admin"; 
-	
+	$password = "admin";
+
 	// Authenticate the user and create a session
 	$repository = new Repository($repositoryUrl);
 	$ticket = $repository->authenticate($userName, $password);
 	$session = $repository->createSession($ticket);
-	
+
 	// Create a reference to the 'SpacesStore'
 	$spacesStore = new SpacesStore($session);
-	
+
 	// Get the company home node
-	$companyHome = $spacesStore->companyHome;	 
+	$companyHome = $spacesStore->companyHome;
 ?>
 
 <html>

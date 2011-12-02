@@ -38,8 +38,8 @@ class Session extends BaseObject {
 	/**
 	 * Constructor
 	 *
-	 * @param userName the user name
-	 * @param ticket the currently authenticated users ticket
+	 * @param $repository
+	 * @param $ticket the currently authenticated users ticket
 	 */
 	public function __construct($repository, $ticket) {
 		$this->nodeCache = array();
@@ -89,7 +89,7 @@ class Session extends BaseObject {
 	/**
 	 * Get the store from it string representation (eg: workspace://SpacesStore)
 	 *
-	 * @param $value the stores string representation
+	 * @param string $value the stores string representation
 	 * @return Store the store
 	 */
 	public function getStoreFromString($value) {
@@ -113,6 +113,8 @@ class Session extends BaseObject {
 
 	/**
 	 * Adds a new node to the session.
+	 *
+	 * @param $node
 	 */
 	public function addNode($node) {
 		$this->nodeCache[$node->__toString()] = $node;
@@ -129,6 +131,9 @@ class Session extends BaseObject {
 
 	/**
 	 * Commits all unsaved changes to the repository
+	 *
+	 * @param boolean $debug
+	 * @return void
 	 */
 	public function save($debug = FALSE) {
 		// Build the update statements from the node cache

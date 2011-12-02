@@ -48,7 +48,11 @@ class Node extends BaseObject {
 	private $removedAssociations;
 
 	/**
-	 * Constructor
+	 * Constructor.
+	 *
+	 * @param $session
+	 * @param $store
+	 * @param $id
 	 */
 	public function __construct($session, $store, $id) {
 		$this->_session = $session;
@@ -62,8 +66,11 @@ class Node extends BaseObject {
 
 	/**
 	 * Util method to create a node from a web service node structure.
+	 *
+	 * @param Session $session
+	 * @param $webServiceNode
 	 */
-	public static function createFromWebServiceData($session, $webServiceNode) {
+	public static function createFromWebServiceData(Session $session, $webServiceNode) {
 		$scheme = $webServiceNode->reference->store->scheme;
 		$address = $webServiceNode->reference->store->address;
 		$id = $webServiceNode->reference->uuid;

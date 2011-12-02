@@ -26,7 +26,9 @@ require_once('Alfresco/Service/Session.php');
  * can be used to populate a content property.
  *
  * @param $session the session
- * @param $filePath the file location
+ * @param string $filePath the file location
+ * @param string $mimetype
+ * @param string $encoding
  * @return String the content data that can be used to update the content property
  */
 function upload_file($session, $filePath, $mimetype = NULL, $encoding = NULL) {

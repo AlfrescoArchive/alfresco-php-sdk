@@ -3,7 +3,7 @@
 /**
  * Utility for dealing with a simple history cache of strings.
  * The history is stored with the most recent addition firstmost.
- * 
+ *
  * Changelog:
  *  0.5 First created [David Spurr]
  *
@@ -31,13 +31,12 @@ class util_History {
 	 * @var int
 	 */
 	private $historySize;
-	
+
 	/**
 	 * History constructor
-	 * 
-	 * @access public
-	 * @param string Absolute cache file path
-	 * @param int Max length of history - optional - default 10
+	 *
+	 * @param string $cacheFilePath Absolute cache file path
+	 * @param integer $historySize Max length of history - optional - default 10
 	 * @return void
 	 */
 	public function __construct($cacheFilePath, $historySize = 10) {
@@ -51,32 +50,32 @@ class util_History {
 		$this->cacheAccessible = (file_exists($this->cacheFilePath) && is_readable($this->cacheFilePath) && is_writable($this->cacheFilePath));
 		$this->pickupCache();
 	}
-	
+
 	/**
 	 * Returns whether the cache is available or not (either for reading or writing)
-	 * 
+	 *
 	 * @access public
 	 * @return boolean
 	 */
 	public function isCacheAvailable() {
 		return $this->cacheAccessible;
 	}
-	
+
 	/**
 	 * Returns the current history
-	 * 
+	 *
 	 * @access public
 	 * @return array History in descending order (most recently performed tests first)
 	 */
 	public function getHistory() {
 		return $this->history;
 	}
-	
+
 	/**
 	 * Saves the provided string to the history cache
-	 * 
+	 *
 	 * @access public
-	 * @param string 
+	 * @param string
 	 * @return void
 	 */
 	public function addToCache($str) {
@@ -102,7 +101,7 @@ class util_History {
 					// otherwise just prepend it to the history
 					array_unshift($this->history, $str);
 				}
-				
+
 				// ensure that the history is the right length
 				while(count($this->history) > $this->historySize) {
 					array_pop($this->history);
@@ -111,10 +110,10 @@ class util_History {
 			$this->saveCache();
 		}
 	}
-	
+
 	/**
 	 * Picks up the history cache from the cache file
-	 * 
+	 *
 	 * @access private
 	 * @return void
 	 */
@@ -131,10 +130,10 @@ class util_History {
 		}
 		$this->history = $history;
 	}
-	
+
 	/**
 	 * Saves the history cache to the cache file
-	 * 
+	 *
 	 * @access private
 	 * @return void
 	 */

@@ -39,6 +39,8 @@ class BaseObject {
 		if (method_exists($this, $methodName)) {
 			return $this->$methodName($value);
 		}
+
+		return NULL;
 	}
 
 	protected function resultSetToNodes($session, $store, $resultSet) {

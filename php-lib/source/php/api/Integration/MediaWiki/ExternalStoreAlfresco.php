@@ -91,21 +91,22 @@ class ExternalStoreAlfresco {
 	private $store;
 	private $wikiSpace;
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
-		global $alfURL, $alfUser, $alfPassword, $alfWikiStore, $alfWikiSpace;
-
 		//$this->logger = new Logger("integration.mediawiki.ExternalStoreAlfresco");
 
 		// Create the session
-		$repository = new Repository($alfURL);
-		$ticket = $repository->authenticate($alfUser, $alfPassword);
+		$repository = new Repository($GLOBALS['alfURL']);
+		$ticket = $repository->authenticate($GLOBALS['alfUser'], $GLOBALS['alfPassword']);
 		$this->session = $repository->createSession($ticket);
 
 		// Get the store
-		$this->store = $this->session->getStoreFromString($alfWikiStore);
+		$this->store = $this->session->getStoreFromString($GLOBALS['alfWikiStore']);
 
 		// Get the wiki space
-		$results = $this->session->query($this->store, 'PATH:"' . $alfWikiSpace . '"');
+		$results = $this->session->query($this->store, 'PATH:"' . $GLOBALS['alfWikiSpace'] . '"');
 		$this->wikiSpace = $results[0];
 	}
 

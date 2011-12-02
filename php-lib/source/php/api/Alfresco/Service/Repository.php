@@ -94,7 +94,9 @@ class Repository extends BaseObject {
 	}
 
 	/**
-	 * For a given ticket, returns the realated session id, NULL if one can not be found.
+	 * For a given ticket, returns the related session id, NULL if one can not be found.
+	 *
+	 * @param $ticket
 	 */
 	public static function getSessionId($ticket) {
 		$result = NULL;

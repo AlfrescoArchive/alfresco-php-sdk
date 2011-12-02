@@ -22,11 +22,11 @@ if (isset($_SERVER["ALF_AVAILABLE"]) == false)
 {
 	require_once('Alfresco/Service/Repository.php');
 	require_once('Alfresco/Service/Session.php');
-	require_once('Alfresco/Service/SpacesStore.php');	
+	require_once('Alfresco/Service/SpacesStore.php');
 }
 
 require_once('../config.php');
-	
+
 if (isset($_SESSION) == false)
 {
    session_start();
@@ -41,12 +41,12 @@ $session = $repository->createSession($ticket);
 $currentStore = new SpacesStore($session);
 if (isset($_REQUEST['store']) == true)
 {
-	$currentStore = $session->getStoreFromString($_REQUEST['store']);	
+	$currentStore = $session->getStoreFromString($_REQUEST['store']);
 }
 $statement = null;
 if (isset($_REQUEST['statement']) == true)
-{	
-	$statement = $_REQUEST['statement'];	
+{
+	$statement = $_REQUEST['statement'];
 }
 
 // Figure out whether we need to execute the query
@@ -77,31 +77,31 @@ if ($currentStore != null && $statement != null)
 						<select name="store">
 <?php
 						foreach ($session->stores as $store)
-						{	
+						{
 ?>
-							<option 
+							<option
 							    <?php if ($store->__toString() == $currentStore->__toString()) { echo "selected"; } ?>
 								value="<?php echo $store->__toString() ?>">
 									<?php echo $store->__toString() ?>
 							</option>
 <?php
 						}
-?>					
+?>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<td>Query:</td>
-					<td><input 
-							name="statement" 
-							type="textbox" 
-							style="width: 300" 
+					<td><input
+							name="statement"
+							type="textbox"
+							style="width: 300"
 							value='<?php if ($statement != null) { echo $statement; } ?>'/></td>
 				<tr>
 				<tr>
 					<td></td>
 					<td align=right>
-						<input type='submit' vlaue='Execute'/>
+						<input type='submit' value='Execute'/>
 					</td>
 				</tr>
 			</table>
@@ -110,13 +110,13 @@ if ($currentStore != null && $statement != null)
 <?php
 	if ($nodes != null)
 	{
-?>	
+?>
 	<tr>
 		<td><hr></td>
 	</tr>
 	<tr>
 		<td>
-		
+
 			<table cellspacing=2 cellpadding=3 border=1>
 				<tr>
 					<td><b>Id</b></td>
@@ -131,14 +131,14 @@ if ($currentStore != null && $statement != null)
 					<td><?php echo $node->id; ?></td>
 					<td><?php echo $node->type; ?></td>
 					<td><?php echo $node->cm_name; ?></td>
-				</tr>	
+				</tr>
 <?php
 				}
-?>				
-				
-				
+?>
+
+
 			</table>
-		
+
 		</td>
 	</tr>
 <?php
@@ -152,7 +152,7 @@ if ($currentStore != null && $statement != null)
 	<tr>
 		<td>No results found</td>
 	</tr>
-<?php		
+<?php
 	}
 ?>
 </table>

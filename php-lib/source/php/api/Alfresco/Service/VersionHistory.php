@@ -24,7 +24,10 @@
  * @author Roy Wetherall
  */
 class VersionHistory extends BaseObject {
-	/** Node to which this version history relates */
+	/**
+	 * Node to which this version history relates
+	 * @var \Node
+	 */
 	private $_node;
 
 	/** Array of versions */
@@ -33,15 +36,17 @@ class VersionHistory extends BaseObject {
 	/**
 	 * Constructor
 	 *
-	 * @param	$node	the node that this version history apples to
+	 * @param Node $node the node that this version history apples to
 	 */
-	public function __construct($node) {
+	public function __construct(Node $node) {
 		$this->_node = $node;
 		$this->populateVersionHistory();
 	}
 
 	/**
 	 * Get the node that this version history relates to
+	 *
+	 * @return \Node
 	 */
 	public function getNode() {
 		return $this->_node;
@@ -59,6 +64,7 @@ class VersionHistory extends BaseObject {
 	 */
 	private function populateVersionHistory() {
 		// Use the web service API to get the version history for this node
+		/** @var $client AlfrescoWebService */
 		$client = WebServiceFactory::getAuthoringService($this->_node->session->repository->connectionUrl, $this->_node->session->ticket);
 		$result = $client->getVersionHistory(array("node" => $this->_node->__toArray()));
 

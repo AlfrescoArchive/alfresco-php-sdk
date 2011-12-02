@@ -37,7 +37,7 @@ class Version extends BaseObject {
 	 * Constructor
 	 *
 	 * @param	$session		the session that the version is tied to
-	 * @param	@store			the store that the forzen node is stored in
+	 * @param	@store			the store that the frozen node is stored in
 	 * @prarm	@id				the id of the frozen node
 	 * @param   @description	the description of the version
 	 * @param	@major			indicates whether this is a major or minor revision
