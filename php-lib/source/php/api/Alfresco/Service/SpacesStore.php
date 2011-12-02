@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2005-2010 Alfresco Software Limited.
+ * Copyright (C) 2005-2011 Alfresco Software Limited.
  *
  * This file is part of Alfresco
  *
@@ -17,32 +17,28 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
- 
-require_once 'Store.php';
-require_once 'Node.php';
 
-class SpacesStore extends Store
-{
+require_once('Store.php');
+require_once('Node.php');
+
+class SpacesStore extends Store {
 	private $_companyHome;
 
-	public function __construct($session)
-	{
+	public function __construct($session) {
 		parent::__construct($session, "SpacesStore");
 	}
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->scheme . "://" . $this->address;
 	}
-	
-	public function getCompanyHome()
-	{
-		if ($this->_companyHome == null)
-		{
+
+	public function getCompanyHome() {
+		if ($this->_companyHome == null) {
 			$nodes = $this->_session->query($this, 'PATH:"app:company_home"');
-	        $this->_companyHome = $nodes[0];
+			$this->_companyHome = $nodes[0];
 		}
 		return $this->_companyHome;
 	}
 }
+
 ?>

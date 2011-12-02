@@ -1,7 +1,6 @@
 <?php
-
 /*
- * Copyright (C) 2005-2010 Alfresco Software Limited.
+ * Copyright (C) 2005-2011 Alfresco Software Limited.
  *
  * This file is part of Alfresco
  *
@@ -19,31 +18,26 @@
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Association extends BaseObject
-{
+class Association extends BaseObject {
 	private $_from;
 	private $_to;
 	private $_type;
-	
-	public function __construct($from, $to, $type)
-	{
+
+	public function __construct($from, $to, $type) {
 		$this->_from = $from;
 		$this->_to = $to;
-		$this->_type = $type;	
+		$this->_type = $type;
 	}
-	
-	public function getFrom()
-	{
+
+	public function getFrom() {
 		return $this->_from;
 	}
-	
-	public function getTo()
-	{
+
+	public function getTo() {
 		return $this->_to;
 	}
-	
-	public function getType()
-	{
+
+	public function getType() {
 		return $this->_type;
 	}
 }

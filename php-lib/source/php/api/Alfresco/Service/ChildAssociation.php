@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2005-2010 Alfresco Software Limited.
+ * Copyright (C) 2005-2011 Alfresco Software Limited.
  *
  * This file is part of Alfresco
  *
@@ -18,17 +18,15 @@
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ChildAssociation extends BaseObject
-{
+class ChildAssociation extends BaseObject {
 	private $_parent;
 	private $_child;
 	private $_type;
 	private $_name;
 	private $_isPrimary;
 	private $_nthSibling;
-	
-	public function __construct($parent, $child, $type, $name, $isPrimary=false, $nthSibling=0)
-	{
+
+	public function __construct($parent, $child, $type, $name, $isPrimary = false, $nthSibling = 0) {
 		$this->_parent = $parent;
 		$this->_child = $child;
 		$this->_type = $type;
@@ -36,35 +34,30 @@ class ChildAssociation extends BaseObject
 		$this->_isPrimary = $isPrimary;
 		$this->_nthSibling = $nthSibling;
 	}
-	
-	public function getParent()
-	{
+
+	public function getParent() {
 		return $this->_parent;
 	}
-	
-	public function getChild()
-	{
+
+	public function getChild() {
 		return $this->_child;
 	}
-	
-	public function getType()
-	{
+
+	public function getType() {
 		return $this->_type;
 	}
-	
-	public function getName()
-	{
+
+	public function getName() {
 		return $this->_name;
 	}
-	
-	public function getIsPrimary()
-	{
+
+	public function getIsPrimary() {
 		return $this->_isPrimary;
 	}
-	
-	public function getNthSibling()
-	{
+
+	public function getNthSibling() {
 		return $this->_nthSibling;
 	}
 }
+
 ?>

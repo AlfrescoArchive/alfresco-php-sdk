@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2005-2010 Alfresco Software Limited.
+ * Copyright (C) 2005-2011 Alfresco Software Limited.
  *
  * This file is part of Alfresco
  *
@@ -17,50 +17,42 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
- 
-require_once 'BaseObject.php';
-require_once 'Node.php';
 
-class Store extends BaseObject
-{
+require_once('BaseObject.php');
+require_once('Node.php');
+
+class Store extends BaseObject {
 	protected $_session;
 	protected $_address;
 	protected $_scheme;
 	protected $_rootNode;
 
-	public function __construct($session, $address, $scheme = "workspace")
-	{
+	public function __construct($session, $address, $scheme = "workspace") {
 		$this->_session = $session;
 		$this->_address = $address;
 		$this->_scheme = $scheme;
 	}
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->scheme . "://" . $this->address;
 	}
-	
-	public function __toArray()
-	{
+
+	public function __toArray() {
 		return array(
 			"scheme" => $this->_scheme,
 			"address" => $this->_address);
 	}
 
-	public function getAddress()
-	{
+	public function getAddress() {
 		return $this->_address;
 	}
 
-	public function getScheme()
-	{
+	public function getScheme() {
 		return $this->_scheme;
 	}
 
-	public function getRootNode()
-	{
-		if (isset ($this->_rootNode) == false)
-		{
+	public function getRootNode() {
+		if (isset ($this->_rootNode) == false) {
 			$result = $this->_session->repositoryService->get(
 				array(
 					"where" => array(
@@ -72,4 +64,5 @@ class Store extends BaseObject
 		return $this->_rootNode;
 	}
 }
+
 ?>

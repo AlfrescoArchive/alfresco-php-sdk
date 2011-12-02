@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2005-2010 Alfresco Software Limited.
+ * Copyright (C) 2005-2011 Alfresco Software Limited.
  *
  * This file is part of Alfresco
  *
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 define("DEBUG", "Debug");
 define("WARNING", "Warning");
 define("INFO", "Information");
@@ -29,10 +29,11 @@ $noneLevel = array();
 
 $defaultLogLevel = $infoLevel;
 
-$logFile = "c:/work/AlfrescoPHPLog.txt"; 
+// TODO: Remove this hard-coded value
+$logFile = 'c:/work/AlfrescoPHPLog.txt';
 $componentLogLevels = array(
-								"integration.mediawiki.ExternalStoreAlfresco" => $debugLevel
-				   			);
- 
- 
+	'integration.mediawiki.ExternalStoreAlfresco' => $debugLevel
+);
+
+
 ?>

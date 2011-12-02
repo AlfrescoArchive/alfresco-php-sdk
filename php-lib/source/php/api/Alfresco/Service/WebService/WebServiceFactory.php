@@ -1,7 +1,6 @@
 <?php
-
 /*
- * Copyright (C) 2005-2010 Alfresco Software Limited.
+ * Copyright (C) 2005-2011 Alfresco Software Limited.
  *
  * This file is part of Alfresco
  *
@@ -19,39 +18,33 @@
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once 'AlfrescoWebService.php';
+require_once('AlfrescoWebService.php');
 
-class WebServiceFactory
-{
-   public static function getAuthenticationService($path)
-   {
-        $path .= '/AuthenticationService?wsdl';
-        return new AlfrescoWebService($path, array());
-   }
+class WebServiceFactory {
+	public static function getAuthenticationService($path) {
+		$path .= '/AuthenticationService?wsdl';
+		return new AlfrescoWebService($path, array());
+	}
 
-   public static function getRepositoryService($path, $ticket)
-   {
-        $path .= '/RepositoryService?wsdl';
-        return new AlfrescoWebService($path, array(), $ticket);
-   }
-   
-   public static function getContentService($path, $ticket)
-   {
-        $path .= '/ContentService?wsdl';
-        return new AlfrescoWebService($path, array(), $ticket);
-   }
-   
-   public static function getAdministrationService($path, $ticket)
-   {
-        $path .= '/AdministrationService?wsdl';
-        return new AlfrescoWebService($path, array(), $ticket);
-   }   
-   
-   public static function getAuthoringService($path, $ticket)
-   {
-        $path .= '/AuthoringService?wsdl';
-        return new AlfrescoWebService($path, array(), $ticket);
-   }
+	public static function getRepositoryService($path, $ticket) {
+		$path .= '/RepositoryService?wsdl';
+		return new AlfrescoWebService($path, array(), $ticket);
+	}
+
+	public static function getContentService($path, $ticket) {
+		$path .= '/ContentService?wsdl';
+		return new AlfrescoWebService($path, array(), $ticket);
+	}
+
+	public static function getAdministrationService($path, $ticket) {
+		$path .= '/AdministrationService?wsdl';
+		return new AlfrescoWebService($path, array(), $ticket);
+	}
+
+	public static function getAuthoringService($path, $ticket) {
+		$path .= '/AuthoringService?wsdl';
+		return new AlfrescoWebService($path, array(), $ticket);
+	}
 }
 
 ?>

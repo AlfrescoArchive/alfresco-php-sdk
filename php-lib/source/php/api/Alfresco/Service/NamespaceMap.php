@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2005-2010 Alfresco Software Limited.
+ * Copyright (C) 2005-2011 Alfresco Software Limited.
  *
  * This file is part of Alfresco
  *
@@ -18,10 +18,9 @@
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class NamespaceMap
-{
+class NamespaceMap {
 	const DELIMITER = "_";
-	
+
 	private $namespaceMap = array(
 		"d" => "http://www.alfresco.org/model/dictionary/1.0",
 		"sys" => "http://www.alfresco.org/model/system/1.0",
@@ -34,82 +33,68 @@ class NamespaceMap
 		"security" => "http://www.alfresco.org/model/security/1.0",
 		"wcm" => "http://www.alfresco.org/model/wcmmodel/1.0",
 		"wca" => "http://www.alfresco.org/model/wcmappmodel/1.0");
-	
-	public function isShortName($shortName)
-	{
+
+	public function isShortName($shortName) {
 		return ($shortName != $this->getFullName($shortName));
 	}
-		
-	public function getFullName($shortName)
-	{
+
+	public function getFullName($shortName) {
 		$result = $shortName;
-		
+
 		$index = strpos($shortName, NamespaceMap::DELIMITER);
-		if ($index !== false)
-		{
+		if ($index !== false) {
 			$prefix = substr($shortName, 0, $index);
-						
-			if (isset($this->namespaceMap[$prefix]) == true)	
-			{
+
+			if (isset($this->namespaceMap[$prefix]) == true) {
 				$url = $this->namespaceMap[$prefix];
-				$name = substr($shortName, $index+1);
+				$name = substr($shortName, $index + 1);
 				$name = str_replace("_", "-", $name);
-				if ($name != null && strlen($name) != 0)
-				{
-					$result = "{".$url."}".$name;
+				if ($name != null && strlen($name) != 0) {
+					$result = "{" . $url . "}" . $name;
 				}
 			}
 		}
-		
+
 		return $result;
 	}
-	
-	public function getFullNames($fullNames)
-	{
+
+	public function getFullNames($fullNames) {
 		$result = array();
-		
-		foreach ($fullNames as $fullName)
-		{
-			$result[] = $this->getFullName($fullName);			
-		}		
+
+		foreach ($fullNames as $fullName) {
+			$result[] = $this->getFullName($fullName);
+		}
 		return $result;
 	}
-	
-	public function getShortName($fullName)
-	{
+
+	public function getShortName($fullName) {
 		$result = $fullName;
-		
+
 		$index = strpos($fullName, "}");
-		if ($index !== false)
-		{
-			$url = substr($fullName, 1, $index-1);
+		if ($index !== false) {
+			$url = substr($fullName, 1, $index - 1);
 			$prefix = $this->lookupPrefix($url);
-			if ($prefix != null)
-			{
-				$name = substr($fullName, $index+1);
-				if ($name != null && strlen($name) != 0)
-				{					
-					$name = str_replace("-", "_", $name);			
-					$result = $prefix.NamespaceMap::DELIMITER.$name;
+			if ($prefix != null) {
+				$name = substr($fullName, $index + 1);
+				if ($name != null && strlen($name) != 0) {
+					$name = str_replace("-", "_", $name);
+					$result = $prefix . NamespaceMap::DELIMITER . $name;
 				}
 			}
 		}
-		
-		return $result;	
+
+		return $result;
 	}
-	
-	private function lookupPrefix($value)
-	{
+
+	private function lookupPrefix($value) {
 		$result = null;
-		foreach($this->namespaceMap as $prefix => $url)
-		{
-			if ($url == $value)
-			{
+		foreach ($this->namespaceMap as $prefix => $url) {
+			if ($url == $value) {
 				$result = $prefix;
 			}
 		}
 		return $result;
-	} 
+	}
 }
 
 ?>
