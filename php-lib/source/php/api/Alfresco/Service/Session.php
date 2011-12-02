@@ -61,13 +61,13 @@ class Session extends BaseObject {
 	public function createStore($address, $scheme = "workspace") {
 		// Create the store
 		$result = $this->repositoryService->createStore(array(
-				"scheme" => $scheme,
-				"address" => $address)
+				'scheme' => $scheme,
+				'address' => $address)
 		);
 		$store = new Store($this, $result->createStoreReturn->address, $result->createStoreReturn->scheme);
 
 		// Add to the cached list if its been populated
-		if (isset($this->_stores) == true) {
+		if (isset($this->_stores)) {
 			$this->_stores[] = $store;
 		}
 
@@ -99,7 +99,7 @@ class Session extends BaseObject {
 
 	public function getNode($store, $id) {
 		$node = $this->getNodeImpl($store, $id);
-		if ($node == null) {
+		if ($node === NULL) {
 			$node = new Node($this, $store, $id);
 			$this->addNode($node);
 		}
@@ -108,7 +108,7 @@ class Session extends BaseObject {
 
 	public function getNodeFromString($value) {
 		// TODO
-		throw new Exception("getNode($value) not yet implemented", 1322830975);
+		throw new Exception('getNode($value) not yet implemented', 1322830975);
 	}
 
 	/**
@@ -119,9 +119,9 @@ class Session extends BaseObject {
 	}
 
 	private function getNodeImpl($store, $id) {
-		$result = null;
-		$nodeRef = $store->scheme . "://" . $store->address . "/" . $id;
-		if (array_key_exists($nodeRef, $this->nodeCache) == true) {
+		$result = NULL;
+		$nodeRef = $store->scheme . '://' . $store->address . '/' . $id;
+		if (array_key_exists($nodeRef, $this->nodeCache)) {
 			$result = $this->nodeCache[$nodeRef];
 		}
 		return $result;
@@ -130,22 +130,21 @@ class Session extends BaseObject {
 	/**
 	 * Commits all unsaved changes to the repository
 	 */
-	public function save($debug = false) {
+	public function save($debug = FALSE) {
 		// Build the update statements from the node cache
 		$statements = array();
 		foreach ($this->nodeCache as $node) {
 			$node->onBeforeSave($statements);
 		}
 
-		if ($debug == true) {
+		if ($debug) {
 			var_dump($statements);
-			echo ("<br><br>");
+			echo ('<br /><br />');
 		}
 
 		if (count($statements) > 0) {
 			// Make the web service call
 			$result = $this->repositoryService->update(array("statements" => $statements));
-			//var_dump($result);
 
 			// Update the state of the updated nodes
 			foreach ($this->nodeCache as $node) {
@@ -167,7 +166,7 @@ class Session extends BaseObject {
 	private function getIdMap($result) {
 		$return = array();
 		$statements = $result->updateReturn;
-		if (is_array($statements) == true) {
+		if (is_array($statements)) {
 			foreach ($statements as $statement) {
 				if ($statement->statement == "create") {
 					$id = $statement->sourceId;
@@ -210,14 +209,14 @@ class Session extends BaseObject {
 	}
 
 	public function getNamespaceMap() {
-		if ($this->_namespaceMap == null) {
+		if ($this->_namespaceMap === NULL) {
 			$this->_namespaceMap = new NamespaceMap();
 		}
 		return $this->_namespaceMap;
 	}
 
 	public function getStores() {
-		if (isset ($this->_stores) == false) {
+		if (!isset($this->_stores)) {
 			$this->_stores = array();
 			$results = $this->repositoryService->getStores();
 
@@ -232,7 +231,7 @@ class Session extends BaseObject {
 	/** Want these methods to be package scope some how! **/
 
 	public function nextSessionId() {
-		$sessionId = "session" . $this->_ticket . $this->idCount;
+		$sessionId = 'session' . $this->_ticket . $this->idCount;
 		$this->idCount++;
 		return $sessionId;
 	}

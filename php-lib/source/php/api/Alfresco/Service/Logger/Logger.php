@@ -23,7 +23,7 @@ require_once('LoggerConfig.php');
 class Logger {
 	private $componentName;
 
-	public function __construct($componentName = null) {
+	public function __construct($componentName = NULL) {
 		$this->componentName = $componentName;
 	}
 
@@ -44,18 +44,18 @@ class Logger {
 	}
 
 	public function isInformationEnabled() {
-		return $this->isEnabled(INFORMATION);
+		return $this->isEnabled(INFO);
 	}
 
 	public function information($message) {
-		$this->write(INFORMATION, $message);
+		$this->write(INFO, $message);
 	}
 
 	private function isEnabled($logLevel) {
 		global $componentLogLevels, $defaultLogLevel;
 
 		$logLevels = $defaultLogLevel;
-		if ($this->componentName != null && isset($componentLogLevels[$this->componentName]) == true) {
+		if ($this->componentName !== NULL && isset($componentLogLevels[$this->componentName])) {
 			$logLevels = $componentLogLevels[$this->componentName];
 		}
 
@@ -65,8 +65,8 @@ class Logger {
 	private function write($logLevel, $message) {
 		global $logFile;
 
-		$handle = fopen($logFile, "a");
-		fwrite($handle, $logLevel . " " . date("G:i:s d/m/Y") . " - " . $message . "\r\n");
+		$handle = fopen($logFile, 'a');
+		fwrite($handle, $logLevel . ' ' . date('G:i:s d/m/Y') . ' - ' . $message . "\r\n");
 		fclose($handle);
 	}
 }

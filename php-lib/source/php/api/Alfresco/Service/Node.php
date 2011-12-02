@@ -54,7 +54,7 @@ class Node extends BaseObject {
 		$this->_session = $session;
 		$this->_store = $store;
 		$this->_id = $id;
-		$this->_isNewNode = false;
+		$this->_isNewNode = FALSE;
 		$this->addedChildren = array();
 		$this->addedParents = array();
 		$this->addedAssociations = array();
@@ -80,17 +80,16 @@ class Node extends BaseObject {
 		$this->populateProperties();
 
 		// Set the property values
-		foreach ($properties as $name => $value)
-		{
+		foreach ($properties as $name => $value) {
 			$name = $this->_session->namespaceMap->getFullName($name);
 			$this->_properties[$name] = $value;
 		}
 	}
 
-	public function updateContent($property, $mimetype, $encoding = "UTF-8", $content = null) {
+	public function updateContent($property, $mimetype, $encoding = 'UTF-8', $content = NULL) {
 		list($property) = $this->_session->namespaceMap->getFullNames(array($property));
 		$contentData = new ContentData($this, $property, $mimetype, $encoding);
-		if ($content != null) {
+		if ($content != NULL) {
 			$contentData->content = $content;
 		}
 		$this->_properties[$property] = $contentData;
@@ -104,13 +103,13 @@ class Node extends BaseObject {
 		return in_array($aspect, $this->_aspects);
 	}
 
-	public function addAspect($aspect, $properties = null) {
+	public function addAspect($aspect, $properties = NULL) {
 		list($aspect) = $this->_session->namespaceMap->getFullNames(array($aspect));
 		$this->populateProperties();
 
-		if (in_array($aspect, $this->_aspects) == false) {
+		if (!in_array($aspect, $this->_aspects)) {
 			$this->_aspects[] = $aspect;
-			if ($properties != null) {
+			if ($properties != NULL) {
 				foreach ($properties as $name => $value) {
 					$name = $this->_session->namespaceMap->getFullName($name);
 					$this->_properties[$name] = $value;
@@ -126,7 +125,7 @@ class Node extends BaseObject {
 		list($aspect) = $this->_session->namespaceMap->getFullNames(array($aspect));
 		$this->populateProperties();
 
-		if (in_array($aspect, $this->_aspects) == true) {
+		if (in_array($aspect, $this->_aspects)) {
 			$this->remove_array_value($aspect, $this->_aspects);
 			$this->remove_array_value($aspect, $this->addedAspects);
 			$this->removedAspects[] = $aspect;
@@ -138,9 +137,9 @@ class Node extends BaseObject {
 
 		$id = $this->_session->nextSessionId();
 		$newNode = new Node($this->_session, $this->_store, $id);
-		$childAssociation = new ChildAssociation($this, $newNode, $associationType, $associationName, true);
+		$childAssociation = new ChildAssociation($this, $newNode, $associationType, $associationName, TRUE);
 
-		$newNode->_isNewNode = true;
+		$newNode->_isNewNode = TRUE;
 
 		$newNode->_properties = array();
 		$newNode->_aspects = array();
@@ -165,7 +164,7 @@ class Node extends BaseObject {
 	public function addChild($node, $associationType, $associationName) {
 		list($associationType, $associationName) = $this->_session->namespaceMap->getFullNames(array($associationType, $associationName));
 
-		$childAssociation = new ChildAssociation($this, $node, $associationType, $associationName, false);
+		$childAssociation = new ChildAssociation($this, $node, $associationType, $associationName, FALSE);
 		$this->addedChildren[$node->__toString()] = $childAssociation;
 		$node->addedParents[$this->__toString()] = $childAssociation;
 	}
@@ -183,10 +182,10 @@ class Node extends BaseObject {
 	public function removeAssociation($association) {
 	}
 
-	public function createVersion($description = null, $major = false) {
+	public function createVersion($description = NULL, $major = FALSE) {
 		// We can only create a version if there are no outstanding changes for this node
-		if ($this->isDirty() == true) {
-			throw new Exception("You must save any outstanding modifications before a new version can be created.");
+		if ($this->isDirty()) {
+			throw new RuntimeException('You must save any outstanding modifications before a new version can be created.', 1322831489);
 		}
 
 		// TODO implement major flag ...
@@ -195,11 +194,12 @@ class Node extends BaseObject {
 		$result = $client->createVersion(
 			array("items" => array("nodes" => $this->__toArray()),
 				"comments" => array("name" => "description", "value" => $description),
-				"versionChildren" => false));
+				"versionChildren" => FALSE)
+		);
 
 		// Clear the properties and aspects
-		$this->_properties = null;
-		$this->_aspects = null;
+		$this->_properties = NULL;
+		$this->_aspects = NULL;
 
 		// Get the version details
 		// TODO get some of the other details too ...
@@ -213,14 +213,14 @@ class Node extends BaseObject {
 
 	private function isDirty() {
 		$result = true;
-		if ($this->_isNewNode == false &&
+		if (!$this->_isNewNode &&
 			count($this->getModifiedProperties()) == 0 &&
-			($this->addedAspects == null || count($this->addedAspects) == 0) &&
-			($this->removedAssociations == null || count($this->removedAssociations) == 0) &&
-			($this->addedChildren == null || count($this->addedChildren) == 0) &&
-			($this->addedAssociations == null || count($this->addedAssociations) == 0)
+			($this->addedAspects === NULL || count($this->addedAspects) == 0) &&
+			($this->removedAssociations === NULL || count($this->removedAssociations) == 0) &&
+			($this->addedChildren === NULL || count($this->addedChildren) == 0) &&
+			($this->addedAssociations === NULL || count($this->addedAssociations) == 0)
 		) {
-			$result = false;
+			$result = FALSE;
 		}
 		return $result;
 	}
@@ -229,10 +229,10 @@ class Node extends BaseObject {
 		$fullName = $this->_session->namespaceMap->getFullName($name);
 		if ($fullName != $name) {
 			$this->populateProperties();
-			if (array_key_exists($fullName, $this->_properties) == true) {
+			if (array_key_exists($fullName, $this->_properties)) {
 				return $this->_properties[$fullName];
 			} else {
-				return null;
+				return NULL;
 			}
 		} else {
 			return parent::__get($name);
@@ -309,38 +309,38 @@ class Node extends BaseObject {
 	/**
 	 * Accessor for the versionHistory property.
 	 *
-	 * @return	VersionHistory	the versionHistory for the node, null is none
+	 * @return	VersionHistory	the versionHistory for the node, NULL is none
 	 */
 	public function getVersionHistory() {
-		if ($this->_versionHistory == null) {
+		if ($this->_versionHistory === NULL) {
 			$this->_versionHistory = new VersionHistory($this);
 		}
 		return $this->_versionHistory;
 	}
 
 	public function getChildren() {
-		if ($this->_children == null) {
+		if ($this->_children === NULL) {
 			$this->populateChildren();
 		}
 		return $this->_children + $this->addedChildren;
 	}
 
 	public function getParents() {
-		if ($this->_parents == null) {
+		if ($this->_parents === NULL) {
 			$this->populateParents();
 		}
 		return $this->_parents + $this->addedParents;
 	}
 
 	public function getPrimaryParent() {
-		if ($this->_primaryParent == null) {
+		if ($this->_primaryParent === NULL) {
 			$this->populateParents();
 		}
 		return $this->_primaryParent;
 	}
 
 	public function getAssociations() {
-		if ($this->_associations == null) {
+		if ($this->_associations === NULL) {
 			$this->populateAssociations();
 		}
 		return $this->_associations + $this->addedAssociations;
@@ -349,12 +349,12 @@ class Node extends BaseObject {
 	/** Methods used to populate node details from repository */
 
 	private function populateProperties() {
-		if ($this->_isNewNode == false && $this->_properties == null) {
+		if (!$this->_isNewNode && $this->_properties === NULL) {
 			$result = $this->_session->repositoryService->get(array(
-					"where" => array(
-						"nodes" => array(
-							"store" => $this->_store->__toArray(),
-							"uuid" => $this->_id)
+					'where' => array(
+						'nodes' => array(
+							'store' => $this->_store->__toArray(),
+							'uuid' => $this->_id)
 					)
 				)
 			);
@@ -369,7 +369,7 @@ class Node extends BaseObject {
 		// Get the aspects
 		$this->_aspects = array();
 		$aspects = $webServiceNode->aspects;
-		if (is_array($aspects) == true) {
+		if (is_array($aspects)) {
 			foreach ($aspects as $aspect) {
 				$this->_aspects[] = $aspect;
 			}
@@ -384,10 +384,10 @@ class Node extends BaseObject {
 		foreach ($webServiceNode->properties as $propertyDetails) {
 			$name = $propertyDetails->name;
 			$isMultiValue = $propertyDetails->isMultiValue;
-			$value = null;
-			if ($isMultiValue == false) {
+			$value = NULL;
+			if (!$isMultiValue) {
 				$value = $propertyDetails->value;
-				if ($this->isContentData($value) == true) {
+				if ($this->isContentData($value)) {
 					$value = new ContentData($this, $name);
 				}
 			} else {
@@ -426,9 +426,13 @@ class Node extends BaseObject {
 
 	private function populateAssociations() {
 		// TODO should do some sort of limited pull here
-		$result = $this->_session->repositoryService->queryAssociated(array("node" => $this->__toArray(),
-			"association" => array("associationType" => null,
-				"direction" => null)));
+		$result = $this->_session->repositoryService->queryAssociated(array(
+			'node' => $this->__toArray(),
+			'association' => array(
+				'associationType' => NULL,
+				'direction' => NULL
+			)
+		));
 		$resultSet = $result->queryReturn->resultSet;
 
 		$associations = array();
@@ -463,7 +467,7 @@ class Node extends BaseObject {
 			$nthSibling = $value["nthSibling"];
 
 			$parent = $this->_session->getNode(new Store($this->_session, $store_address, $store_scheme), $id);
-			if ($isPrimary == "true" or $isPrimary == true) {
+			if ($isPrimary == 'true' || $isPrimary == TRUE) {
 				$this->_primaryParent = $parent;
 			}
 			$parents[$parent->__toString()] = new ChildAssociation($parent, $this, $assoc_type, $assoc_name, $isPrimary, $nthSibling);
@@ -473,12 +477,12 @@ class Node extends BaseObject {
 	}
 
 	public function onBeforeSave(&$statements) {
-		if ($this->_isNewNode == true) {
+		if ($this->_isNewNode) {
 			$childAssociation = $this->addedParents[$this->_primaryParent->__toString()];
 
 			$parentArray = array();
 			$parent = $this->_primaryParent;
-			if ($parent->_isNewNode == true) {
+			if ($parent->_isNewNode) {
 				$parentArray["parent_id"] = $parent->id;
 				$parentArray["associationType"] = $childAssociation->type;
 				$parentArray["childName"] = $childAssociation->name;
@@ -508,24 +512,24 @@ class Node extends BaseObject {
 		}
 
 		// Update any modified content properties
-		if ($this->_properties != null) {
+		if ($this->_properties !== NULL) {
 			foreach ($this->_properties as $name => $value)
 			{
-				if (($value instanceof ContentData) && $value->isDirty == true) {
+				if (($value instanceof ContentData) && $value->isDirty) {
 					$value->onBeforeSave($statements, $this->getWhereArray());
 				}
 			}
 		}
 
 		// Add the addAspect statements
-		if ($this->addedAspects != null) {
+		if ($this->addedAspects !== NULL) {
 			foreach ($this->addedAspects as $aspect) {
 				$this->addStatement($statements, "addAspect", array("aspect" => $aspect) + $this->getWhereArray());
 			}
 		}
 
 		// Add the removeAspect
-		if ($this->removedAspects != null) {
+		if ($this->removedAspects !== NULL) {
 			foreach ($this->removedAspects as $aspect) {
 				$this->addStatement($statements, "removeAspect", array("aspect" => $aspect) + $this->getWhereArray());
 			}
@@ -533,12 +537,11 @@ class Node extends BaseObject {
 
 		// Add non primary children
 		foreach ($this->addedChildren as $childAssociation) {
-			if ($childAssociation->isPrimary == false) {
-
+			if (!$childAssociation->isPrimary) {
 				$assocDetails = array("associationType" => $childAssociation->type, "childName" => $childAssociation->name);
 
 				$temp = array();
-				if ($childAssociation->child->_isNewNode == true) {
+				if ($childAssociation->child->_isNewNode) {
 					$temp["to_id"] = $childAssociation->child->_id;
 					$temp = $temp + $assocDetails;
 				} else {
@@ -574,7 +577,7 @@ class Node extends BaseObject {
 	}
 
 	private function getPredicateArray($label, $node) {
-		if ($node->_isNewNode == true) {
+		if ($node->_isNewNode) {
 			return array($label . "_id" => $node->_id);
 		} else {
 			return array(
@@ -589,12 +592,13 @@ class Node extends BaseObject {
 		$result = array();
 		foreach ($properties as $name => $value) {
 			// Ignore content properties
-			if (($value instanceof ContentData) == false) {
+			if (!$value instanceof ContentData) {
 				// TODO need to support multi values
 				$result[] = array(
-					"name" => $name,
-					"isMultiValue" => false,
-					"value" => $value);
+					'name' => $name,
+					'isMultiValue' => FALSE,
+					'value' => $value
+				);
 			}
 		}
 		return $result;
@@ -602,15 +606,15 @@ class Node extends BaseObject {
 
 	private function getModifiedProperties() {
 		$modified = $this->_properties;
-		$origional = $this->origionalProperties;
+		$original = $this->origionalProperties;
 		$result = array();
-		if ($modified != null) {
+		if ($modified !== NULL) {
 			foreach ($modified as $key => $value) {
 				// Ignore content properties
-				if (($value instanceof ContentData) == false) {
-					if (array_key_exists($key, $origional) == true) {
+				if (!$value instanceof ContentData) {
+					if (array_key_exists($key, $original)) {
 						// Check to see if the value have been modified
-						if ($value != $origional[$key]) {
+						if ($value != $original[$key]) {
 							$result[$key] = $value;
 						}
 					} else {
@@ -623,25 +627,25 @@ class Node extends BaseObject {
 	}
 
 	public function onAfterSave($idMap) {
-		if (array_key_exists($this->_id, $idMap) == true) {
+		if (array_key_exists($this->_id, $idMap)) {
 			$uuid = $idMap[$this->_id];
-			if ($uuid != null) {
+			if ($uuid !== NULL) {
 				$this->_id = $uuid;
 			}
 		}
 
-		if ($this->_isNewNode == true) {
-			$this->_isNewNode = false;
+		if ($this->_isNewNode) {
+			$this->_isNewNode = FALSE;
 
 			// Clear the properties and aspect
-			$this->_properties = null;
-			$this->_aspects = null;
+			$this->_properties = NULL;
+			$this->_aspects = NULL;
 		}
 
 		// Update any modified content properties
-		if ($this->_properties != null) {
+		if ($this->_properties !== NULL) {
 			foreach ($this->_properties as $name => $value) {
-				if (($value instanceof ContentData) && $value->isDirty == true) {
+				if (($value instanceof ContentData) && $value->isDirty) {
 					$value->onAfterSave();
 				}
 			}
@@ -649,14 +653,14 @@ class Node extends BaseObject {
 
 		$this->origionalProperties = $this->_properties;
 
-		if ($this->_aspects != null) {
+		if ($this->_aspects !== NULL) {
 			// Calculate the updated aspect list
-			if ($this->addedAspects != null) {
+			if ($this->addedAspects !== NULL) {
 				$this->_aspects = $this->_aspects + $this->addedAspects;
 			}
-			if ($this->removedAspects != null) {
+			if ($this->removedAspects !== NULL) {
 				foreach ($this->_aspects as $aspect) {
-					if (in_array($aspect, $this->removedAspects) == true) {
+					if (in_array($aspect, $this->removedAspects)) {
 						$this->remove_array_value($aspect, $this->_aspects);
 					}
 				}
@@ -665,17 +669,17 @@ class Node extends BaseObject {
 		$this->addedAspects = array();
 		$this->removedAspects = array();
 
-		if ($this->_parents != null) {
+		if ($this->_parents !== NULL) {
 			$this->_parents = $this->_parents + $this->addedParents;
 		}
 		$this->addedParents = array();
 
-		if ($this->_children != null) {
+		if ($this->_children !== NULL) {
 			$this->_children = $this->_children + $this->addedChildren;
 		}
 		$this->addedChildren = array();
 
-		if ($this->_associations != null) {
+		if ($this->_associations !== NULL) {
 			$this->_associations = $this->_associations + $this->addedAssociations;
 		}
 		$this->addedAssociations = array();

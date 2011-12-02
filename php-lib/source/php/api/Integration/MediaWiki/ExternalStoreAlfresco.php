@@ -42,9 +42,9 @@ function alfArticleSave(&$article, &$user, &$text, &$summary, $minor, $watch, $s
 	// Execute a query to get the previous versions URL, we can use this later when we save the content
 	// and want to update the version history.
 	$url = null;
-	$fieldName = "old_text";
+	$fieldName = 'old_text';
 	$revision = Revision::newFromId($article->mLatest);
-	if (isset($revision) == true) {
+	if (isset($revision)) {
 		$dbr = wfGetDB(DB_SLAVE);
 		$row = $dbr->selectRow(
 			'text',
@@ -61,7 +61,7 @@ function alfArticleSave(&$article, &$user, &$text, &$summary, $minor, $watch, $s
 	$_SESSION["lastVersionUrl"] = $url;
 
 	// Returning true ensures that the document is saved
-	return true;
+	return TRUE;
 }
 
 function alfTitleMoveComplete(&$title, &$newtitle, &$user, $pageid, $redirid) {

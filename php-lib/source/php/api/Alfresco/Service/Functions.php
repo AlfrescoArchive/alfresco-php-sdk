@@ -29,11 +29,11 @@ require_once('Alfresco/Service/Session.php');
  * @param $filePath the file location
  * @return String the content data that can be used to update the content property
  */
-function upload_file($session, $filePath, $mimetype = null, $encoding = null) {
-	$result = null;
+function upload_file($session, $filePath, $mimetype = NULL, $encoding = NULL) {
+	$result = NULL;
 
 	// Check for the existance of the file
-	if (file_exists($filePath) == false) {
+	if (!file_exists($filePath)) {
 		throw new RuntimeException("The file " . $filePath . "does no exist.", 1322830381);
 	}
 
@@ -50,23 +50,23 @@ function upload_file($session, $filePath, $mimetype = null, $encoding = null) {
 
 	// Create a TCP/IP socket
 	$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-	if ($socket === false) {
+	if ($socket === FALSE) {
 		throw new RuntimeException("socket_create() failed: reason: " . socket_strerror(socket_last_error()), 1322830331);
 	}
 
 	// Connect the socket to the repository
 	$result = socket_connect($socket, $address, $port);
-	if ($result === false) {
+	if ($result === FALSE) {
 		throw new RuntimeException("socket_connect() failed.\nReason: ($result) " . socket_strerror(socket_last_error($socket)), 1322830336);
 	}
 
 	// Write the request header onto the socket
-	$url = "/alfresco/upload/" . urlencode($fileName) . "?ticket=" . $session->ticket;
-	if ($mimetype != null) {
+	$url = '/alfresco/upload/' . urlencode($fileName) . '?ticket=' . $session->ticket;
+	if ($mimetype !== NULL) {
 		// Add mimetype if specified
 		$url .= "&mimetype=" . $mimetype;
 	}
-	if ($encoding != null) {
+	if ($encoding !== NULL) {
 		// Add encoding if specified
 		$url .= "&encoding=" . $encoding;
 	}
@@ -79,7 +79,7 @@ function upload_file($session, $filePath, $mimetype = null, $encoding = null) {
 
 	// Write the content found in the file onto the socket
 	$handle = fopen($filePath, "r");
-	while (feof($handle) == false) {
+	while (!feof($handle)) {
 		$content = fread($handle, 1024);
 		socket_write($socket, $content, strlen($content));
 	}
@@ -88,7 +88,7 @@ function upload_file($session, $filePath, $mimetype = null, $encoding = null) {
 	// Read the response
 	$recv = socket_read($socket, 2048, PHP_BINARY_READ);
 	$index = strpos($recv, "contentUrl");
-	if ($index !== false) {
+	if ($index !== FALSE) {
 		$result = substr($recv, $index);
 	}
 

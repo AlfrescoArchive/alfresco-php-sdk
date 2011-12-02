@@ -42,15 +42,15 @@ class Version extends BaseObject {
 	 * @param   @description	the description of the version
 	 * @param	@major			indicates whether this is a major or minor revision
 	 */
-	public function __construct($session, $store, $id, $description = null, $major = false) {
+	public function __construct($session, $store, $id, $description = NULL, $major = FALSE) {
 		$this->_session = $session;
 		$this->_store = $store;
 		$this->_id = $id;
 		$this->_description = $description;
 		$this->_major = $major;
-		$this->_properties = null;
-		$this->_aspects = null;
-		$this->_type = null;
+		$this->_properties = NULL;
+		$this->_aspects = NULL;
+		$this->_type = NULL;
 	}
 
 	/**
@@ -58,22 +58,18 @@ class Version extends BaseObject {
 	 *
 	 * If called with a valid property short name, the frozen value of that property is returned.
 	 *
-	 * @return	 String	the appropriate property value, null if none found
+	 * @return	 String	the appropriate property value, NULL if none found
 	 */
 	public function __get($name) {
 		$fullName = $this->_session->namespaceMap->getFullName($name);
 		if ($fullName != $name) {
 			$this->populateProperties();
-			if (array_key_exists($fullName, $this->_properties) == true) {
+			if (array_key_exists($fullName, $this->_properties)) {
 				return $this->_properties[$fullName];
+			} else {
+				return NULL;
 			}
-			else
-			{
-				return null;
-			}
-		}
-		else
-		{
+		} else {
 			return parent::__get($name);
 		}
 	}
@@ -121,12 +117,12 @@ class Version extends BaseObject {
 	}
 
 	private function populateProperties() {
-		if ($this->_properties == null) {
+		if ($this->_properties === NULL) {
 			$result = $this->_session->repositoryService->get(array(
-				"where" => array(
-					"nodes" => array(
-						"store" => $this->_store->__toArray(),
-						"uuid" => $this->_id
+				'where' => array(
+					'nodes' => array(
+						'store' => $this->_store->__toArray(),
+						'uuid' => $this->_id
 					)
 				)
 			));
@@ -141,7 +137,7 @@ class Version extends BaseObject {
 		// Get the aspects
 		$this->_aspects = array();
 		$aspects = $webServiceNode->aspects;
-		if (is_array($aspects) == true) {
+		if (is_array($aspects)) {
 			foreach ($aspects as $aspect) {
 				$this->_aspects[] = $aspect;
 			}
@@ -154,10 +150,10 @@ class Version extends BaseObject {
 		foreach ($webServiceNode->properties as $propertyDetails) {
 			$name = $propertyDetails->name;
 			$isMultiValue = $propertyDetails->isMultiValue;
-			$value = null;
-			if ($isMultiValue == false) {
+			$value = NULL;
+			if (!$isMultiValue) {
 				$value = $propertyDetails->value;
-				if ($this->isContentData($value) == true) {
+				if ($this->isContentData($value)) {
 					$value = new ContentData($this, $name);
 				}
 			} else {

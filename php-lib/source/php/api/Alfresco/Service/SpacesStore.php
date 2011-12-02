@@ -29,11 +29,11 @@ class SpacesStore extends Store {
 	}
 
 	public function __toString() {
-		return $this->scheme . "://" . $this->address;
+		return $this->scheme . '://' . $this->address;
 	}
 
 	public function getCompanyHome() {
-		if ($this->_companyHome == null) {
+		if ($this->_companyHome === NULL) {
 			$nodes = $this->_session->query($this, 'PATH:"app:company_home"');
 			$this->_companyHome = $nodes[0];
 		}

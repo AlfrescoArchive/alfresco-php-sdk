@@ -42,14 +42,14 @@ class NamespaceMap {
 		$result = $shortName;
 
 		$index = strpos($shortName, NamespaceMap::DELIMITER);
-		if ($index !== false) {
+		if ($index !== FALSE) {
 			$prefix = substr($shortName, 0, $index);
 
-			if (isset($this->namespaceMap[$prefix]) == true) {
+			if (isset($this->namespaceMap[$prefix])) {
 				$url = $this->namespaceMap[$prefix];
 				$name = substr($shortName, $index + 1);
-				$name = str_replace("_", "-", $name);
-				if ($name != null && strlen($name) != 0) {
+				$name = str_replace('_', '-', $name);
+				if ($name !== NULL && strlen($name) != 0) {
 					$result = "{" . $url . "}" . $name;
 				}
 			}
@@ -71,13 +71,13 @@ class NamespaceMap {
 		$result = $fullName;
 
 		$index = strpos($fullName, "}");
-		if ($index !== false) {
+		if ($index !== FALSE) {
 			$url = substr($fullName, 1, $index - 1);
 			$prefix = $this->lookupPrefix($url);
-			if ($prefix != null) {
+			if ($prefix !== NULL) {
 				$name = substr($fullName, $index + 1);
-				if ($name != null && strlen($name) != 0) {
-					$name = str_replace("-", "_", $name);
+				if ($name !== NULL && strlen($name) != 0) {
+					$name = str_replace('-', '_', $name);
 					$result = $prefix . NamespaceMap::DELIMITER . $name;
 				}
 			}
@@ -87,7 +87,7 @@ class NamespaceMap {
 	}
 
 	private function lookupPrefix($value) {
-		$result = null;
+		$result = NULL;
 		foreach ($this->namespaceMap as $prefix => $url) {
 			if ($url == $value) {
 				$result = $prefix;

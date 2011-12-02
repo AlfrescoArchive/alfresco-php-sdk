@@ -24,9 +24,11 @@ class BaseObject {
 		$methodName[0] = strtoupper($methodName[0]);
 		$methodName = 'get' . $methodName;
 
-		if (method_exists($this, $methodName) == true) {
+		if (method_exists($this, $methodName)) {
 			return $this->$methodName();
 		}
+
+		return NULL;
 	}
 
 	public function __set($name, $value) {
@@ -34,15 +36,15 @@ class BaseObject {
 		$methodName[0] = strtoupper($methodName[0]);
 		$methodName = 'set' . $methodName;
 
-		if (method_exists($this, $methodName) == true) {
+		if (method_exists($this, $methodName)) {
 			return $this->$methodName($value);
 		}
 	}
 
 	protected function resultSetToNodes($session, $store, $resultSet) {
 		$return = array();
-		if (isset($resultSet->rows) == true) {
-			if (is_array($resultSet->rows) == true) {
+		if (isset($resultSet->rows)) {
+			if (is_array($resultSet->rows)) {
 				foreach ($resultSet->rows as $row) {
 					$id = $row->node->id;
 					$return[] = $session->getNode($store, $id);
@@ -58,8 +60,8 @@ class BaseObject {
 
 	protected function resultSetToMap($resultSet) {
 		$return = array();
-		if (isset($resultSet->rows) == true) {
-			if (is_array($resultSet->rows) == true) {
+		if (isset($resultSet->rows)) {
+			if (is_array($resultSet->rows)) {
 				foreach ($resultSet->rows as $row) {
 					$return[] = $this->columnsToMap($row->columns);
 				}
@@ -82,8 +84,8 @@ class BaseObject {
 	}
 
 	protected function remove_array_value($value, &$array) {
-		if ($array != null) {
-			if (in_array($value, $array) == true) {
+		if ($array !== NULL) {
+			if (in_array($value, $array)) {
 				foreach ($array as $index => $value2) {
 					if ($value == $value2) {
 						unset($array[$index]);
@@ -95,8 +97,8 @@ class BaseObject {
 
 	protected function isContentData($value) {
 		$index = strpos($value, "contentUrl=");
-		if ($index === false) {
-			return false;
+		if ($index === FALSE) {
+			return FALSE;
 		} else {
 			return ($index == 0);
 		}

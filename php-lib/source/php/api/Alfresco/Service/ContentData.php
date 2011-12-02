@@ -21,8 +21,8 @@
 require_once('Alfresco/Service/Functions.php');
 
 class ContentData extends BaseObject {
-	private $_isPopulated = false;
-	private $_isDirty = false;
+	private $_isPopulated = FALSE;
+	private $_isDirty = FALSE;
 
 	private $_node;
 	private $_property;
@@ -34,7 +34,7 @@ class ContentData extends BaseObject {
 	private $_newContent;
 	private $_newFileContent;
 
-	public function __construct($node, $property, $mimetype = null, $encoding = null, $size = -1) {
+	public function __construct($node, $property, $mimetype = NULL, $encoding = NULL, $size = -1) {
 		$this->_node = $node;
 		$this->_property = $property;
 		$this->_mimetype = $mimetype;
@@ -42,7 +42,7 @@ class ContentData extends BaseObject {
 		if ($size != -1) {
 			$this->size = $size;
 		}
-		$this->_isPopulated = false;
+		$this->_isPopulated = FALSE;
 	}
 
 	public function setPropertyDetails($node, $property) {
@@ -96,9 +96,9 @@ class ContentData extends BaseObject {
 		// TODO what should be returned if the content has been updated??
 
 		$this->populateContentData();
-		$result = null;
-		if ($this->_url != null) {
-			$result = $this->_url . "?ticket=" . $this->_node->session->ticket;
+		$result = NULL;
+		if ($this->_url !== NULL) {
+			$result = $this->_url . '?ticket=' . $this->_node->session->ticket;
 		}
 		return $result;
 	}
@@ -107,9 +107,9 @@ class ContentData extends BaseObject {
 		// TODO what should be returned if the content has been updated??
 
 		$this->populateContentData();
-		$result = null;
-		if ($this->_url != null) {
-			$result = $this->_url . "?guest=true";
+		$result = NULL;
+		if ($this->_url !== NULL) {
+			$result = $this->_url . '?guest=true';
 		}
 		return $result;
 	}
@@ -117,20 +117,20 @@ class ContentData extends BaseObject {
 	public function getContent() {
 		$this->populateContentData();
 
-		$result = null;
-		if ($this->_isDirty == true) {
-			if ($this->_newFileContent != null) {
-				$handle = fopen($this->_newFileContent, "rb");
+		$result = NULL;
+		if ($this->_isDirty) {
+			if ($this->_newFileContent !== NULL) {
+				$handle = fopen($this->_newFileContent, 'rb');
 				$result = stream_get_contents($handle);
 				fclose($handle);
 			} else {
-				if ($this->_newContent != null) {
+				if ($this->_newContent !== NULL) {
 					$result = $this->_newContent;
 				}
 			}
 		} else {
-			if ($this->getUrl() != null) {
-				$handle = fopen($this->getUrl(), "rb");
+			if ($this->getUrl() !== NULL) {
+				$handle = fopen($this->getUrl(), 'rb');
 				$result = stream_get_contents($handle);
 				fclose($handle);
 			}
@@ -140,13 +140,13 @@ class ContentData extends BaseObject {
 
 	public function setContent($content) {
 		$this->populateContentData();
-		$this->_isDirty = true;
+		$this->_isDirty = TRUE;
 		$this->_newContent = $content;
 	}
 
 	public function writeContentFromFile($fileName) {
 		$this->populateContentData();
-		$this->_isDirty = true;
+		$this->_isDirty = TRUE;
 		$this->_newFileContent = $fileName;
 	}
 
@@ -157,15 +157,15 @@ class ContentData extends BaseObject {
 	}
 
 	public function onBeforeSave(&$statements, $where) {
-		if ($this->_isDirty == true) {
+		if ($this->_isDirty == TRUE) {
 			// Check mimetype has been set
-			if ($this->_mimetype == null) {
+			if ($this->_mimetype == NULL) {
 				throw new Exception("A mime type for the content property " . $this->_property . " on node " . $this->_node->__toString() . " must be set");
 			}
 
 			// If a file has been specified then read content from there
 			//$content = null;
-			if ($this->_newFileContent != null) {
+			if ($this->_newFileContent != NULL) {
 				// Upload the content to the repository
 				$contentData = upload_file($this->node->session, $this->_newFileContent, $this->_mimetype, $this->_encoding);
 
@@ -176,7 +176,7 @@ class ContentData extends BaseObject {
 					array(
 						'property' => array(
 							'name' => $this->property,
-							'isMultiValue' => false,
+							'isMultiValue' => FALSE,
 							'value' => $contentData
 						)
 					) + $where
@@ -200,46 +200,46 @@ class ContentData extends BaseObject {
 	}
 
 	public function onAfterSave() {
-		$this->_isDirty = false;
-		$this->_isPopulated = false;
-		$this->_mimetype = null;
-		$this->__size = null;
-		$this->__encoding = null;
-		$this->__url = null;
-		$this->__newContent = null;
+		$this->_isDirty = FALSE;
+		$this->_isPopulated = FALSE;
+		$this->_mimetype = NULL;
+		$this->__size = NULL;
+		$this->__encoding = NULL;
+		$this->__url = NULL;
+		$this->__newContent = NULL;
 	}
 
 	private function populateContentData() {
 		//echo "isPopulated:".$this->_isPopulated."; node:".$this->_node."; property:".$this->_property."<br>";
-		if ($this->_isPopulated == false && $this->_node != null && $this->_property != null && $this->_node->isNewNode == false) {
+		if (!$this->_isPopulated && $this->_node !== NULL && $this->_property !== NULL && !$this->_node->isNewNode) {
 			$result = $this->_node->session->contentService->read(array(
 				"items" => array(
 					"nodes" => array(
 						"store" => $this->_node->store->__toArray(),
 						"uuid" => $this->_node->id)),
 				"property" => $this->_property));
-			if (isset($result->content) == true) {
-				if (isset($result->content->length) == true) {
+			if (isset($result->content)) {
+				if (isset($result->content->length)) {
 					$this->_size = $result->content->length;
 				}
-				if (isset($result->content->format->mimetype) == true) {
+				if (isset($result->content->format->mimetype)) {
 					$this->_mimetype = $result->content->format->mimetype;
 				}
-				if (isset($result->content->format->encoding) == true) {
+				if (isset($result->content->format->encoding)) {
 					$this->_encoding = $result->content->format->encoding;
 				}
-				if (isset($result->content->url) == true) {
+				if (isset($result->content->url)) {
 					$this->_url = $result->content->url;
 				}
 			}
 
-			$this->_isPopulated = true;
+			$this->_isPopulated = TRUE;
 		}
 	}
 
 	private function addStatement(&$statements, $statement, $body) {
 		$result = array();
-		if (array_key_exists($statement, $statements) == true) {
+		if (array_key_exists($statement, $statements)) {
 			$result = $statements[$statement];
 		}
 		$result[] = $body;

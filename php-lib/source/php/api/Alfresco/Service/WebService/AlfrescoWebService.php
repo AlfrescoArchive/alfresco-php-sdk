@@ -25,7 +25,7 @@ class AlfrescoWebService extends SoapClient {
 
 	private $ticket;
 
-	public function __construct($wsdl, $options = array('trace' => true, 'exceptions' => true), $ticket = null) {
+	public function __construct($wsdl, $options = array('trace' => TRUE, 'exceptions' => TRUE), $ticket = NULL) {
 		// Store the current ticket
 		$this->ticket = $ticket;
 
@@ -40,12 +40,12 @@ class AlfrescoWebService extends SoapClient {
 	public function __soapCall($function_name, $arguments = array(), $options = array(), $input_headers = array(), $output_headers = array()) {
 		if (isset($this->ticket)) {
 			// Automatically add a security header
-			$input_headers[] = new SoapHeader($this->securityExtNS, "Security", null, 1);
+			$input_headers[] = new SoapHeader($this->securityExtNS, 'Security', NULL, 1);
 
 			// Set the JSESSION cookie value
 			$sessionId = Repository::getSessionId($this->ticket);
-			if ($sessionId != null) {
-				$this->__setCookie("JSESSIONID", $sessionId);
+			if ($sessionId !== NULL) {
+				$this->__setCookie('JSESSIONID', $sessionId);
 			}
 		}
 
@@ -62,7 +62,7 @@ class AlfrescoWebService extends SoapClient {
 			$securityHeader = $dom->getElementsByTagName("Security");
 
 			if ($securityHeader->length != 1) {
-				throw new Exception("Expected length: 1, Received: " . $securityHeader->length . ". No Security Header, or more than one element called Security!");
+				throw new RuntimeException("Expected length: 1, Received: " . $securityHeader->length . ". No Security Header, or more than one element called Security!", 1322832736);
 			}
 
 			$securityHeader = $securityHeader->item(0);

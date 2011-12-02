@@ -26,7 +26,7 @@ class ChildAssociation extends BaseObject {
 	private $_isPrimary;
 	private $_nthSibling;
 
-	public function __construct($parent, $child, $type, $name, $isPrimary = false, $nthSibling = 0) {
+	public function __construct($parent, $child, $type, $name, $isPrimary = FALSE, $nthSibling = 0) {
 		$this->_parent = $parent;
 		$this->_child = $child;
 		$this->_type = $type;

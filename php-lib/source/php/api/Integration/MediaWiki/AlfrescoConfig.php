@@ -18,7 +18,7 @@
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
 
-$alfDebug = true;
+$alfDebug = TRUE;
 
 /** The web service end point that will be used when accessing the Alfresco repository **/
 $alfURL = 'http://localhost:8080/alfresco/api';

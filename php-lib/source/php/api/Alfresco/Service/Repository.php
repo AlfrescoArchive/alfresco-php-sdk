@@ -21,7 +21,7 @@
 require_once('Alfresco/Service/WebService/WebServiceFactory.php');
 require_once('Alfresco/Service/BaseObject.php');
 
-if (isset($_SESSION) == false) {
+if (!isset($_SESSION)) {
 	// Start the session
 	session_start();
 }
@@ -64,24 +64,24 @@ class Repository extends BaseObject {
 		$sessionId = $result->startSessionReturn->sessionid;
 
 		// Store the session id for later use
-		if ($sessionId != null) {
-			$sessionIds = null;
-			if (isset($_SESSION["sessionIds"]) == false) {
+		if ($sessionId !== NULL) {
+			$sessionIds = NULL;
+			if (!isset($_SESSION['sessionIds'])) {
 				$sessionIds = array();
 			} else {
-				$sessionIds = $_SESSION["sessionIds"];
+				$sessionIds = $_SESSION['sessionIds'];
 			}
 			$sessionIds[$ticket] = $sessionId;
-			$_SESSION["sessionIds"] = $sessionIds;
+			$_SESSION['sessionIds'] = $sessionIds;
 		}
 
 		return $ticket;
 	}
 
-	public function createSession($ticket = null) {
-		$session = null;
+	public function createSession($ticket = NULL) {
+		$session = NULL;
 
-		if ($ticket == null) {
+		if ($ticket === NULL) {
 			// TODO get ticket from some well known location ie: the $_SESSION
 		} else {
 			// TODO would be nice to be able to check that the ticket is still valid!
@@ -94,12 +94,12 @@ class Repository extends BaseObject {
 	}
 
 	/**
-	 * For a given ticket, returns the realated session id, null if one can not be found.
+	 * For a given ticket, returns the realated session id, NULL if one can not be found.
 	 */
 	public static function getSessionId($ticket) {
-		$result = null;
-		if (isset($_SESSION["sessionIds"]) == true) {
-			$result = $_SESSION["sessionIds"][$ticket];
+		$result = NULL;
+		if (isset($_SESSION['sessionIds'])) {
+			$result = $_SESSION['sessionIds'][$ticket];
 		}
 		return $result;
 	}
