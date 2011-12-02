@@ -45,11 +45,13 @@ function alfArticleSave(&$article, &$user, &$text, &$summary, $minor, $watch, $s
 	$fieldName = "old_text";
 	$revision = Revision::newFromId($article->mLatest);
 	if (isset($revision) == true) {
-		$dbw =& $article->getDB();
-		$row = $dbw->selectRow('text',
+		$dbr = wfGetDB(DB_SLAVE);
+		$row = $dbr->selectRow(
+			'text',
 			array('old_text', 'old_flags'),
 			array('old_id' => $revision->getTextId()),
-			"ExternalStoreAlfresco::alfArticleSave");
+			'ExternalStoreAlfresco::alfArticleSave'
+		);
 		$url = $row->$fieldName;
 	}
 
