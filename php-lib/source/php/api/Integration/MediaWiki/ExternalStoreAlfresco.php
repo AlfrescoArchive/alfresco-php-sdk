@@ -37,8 +37,18 @@ $wgHooks['TitleMoveComplete'][] = 'alfTitleMoveComplete';
 /**
  * Hook function called before content is saved.  At this point we can extract information about the article
  * and store it on the session to be used later.
+ *
+ * @param WikiPage $article
+ * @param User $user
+ * @param string $text
+ * @param string $summary
+ * @param bool $minor
+ * @param NULL $watch
+ * @param NULL $sectionAnchor
+ * @param int $flags
+ * @return bool
  */
-function alfArticleSave(&$article, &$user, &$text, &$summary, $minor, $watch, $sectionanchor, &$flags) {
+function alfArticleSave(WikiPage $article, User $user, &$text, &$summary, $minor, $watch, $sectionAnchor, &$flags) {
 	// Execute a query to get the previous versions URL, we can use this later when we save the content
 	// and want to update the version history.
 	$url = null;
