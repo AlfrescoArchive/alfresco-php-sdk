@@ -29,7 +29,9 @@ class Session extends BaseObject {
 
 	private $_repository;
 	private $_ticket;
+	/** @var Store[] */
 	private $_stores;
+	/** @var NamespaceMap */
 	private $_namespaceMap;
 
 	private $nodeCache;
@@ -52,7 +54,7 @@ class Session extends BaseObject {
 	}
 
 	/**
-	 * Creates a new store in the current respository
+	 * Creates a new store in the current repository
 	 *
 	 * @param $address the address of the new store
 	 * @param $scheme the scheme of the new store, default value of 'workspace'
@@ -76,7 +78,7 @@ class Session extends BaseObject {
 	}
 
 	/**
-	 * Get the store
+	 * Gets the store
 	 *
 	 * @param $address the address of the store
 	 * @param $scheme the scheme of the store.  The default it 'workspace'
@@ -87,7 +89,7 @@ class Session extends BaseObject {
 	}
 
 	/**
-	 * Get the store from it string representation (eg: workspace://SpacesStore)
+	 * Gets the store from it string representation (eg: workspace://SpacesStore)
 	 *
 	 * @param string $value the stores string representation
 	 * @return Store the store
@@ -97,7 +99,14 @@ class Session extends BaseObject {
 		return new Store($this, $address, $scheme);
 	}
 
-	public function getNode($store, $id) {
+	/**
+	 * Gets a Node
+	 *
+	 * @param Store $store
+	 * @param $id
+	 * @return Node
+	 */
+	public function getNode(Store $store, $id) {
 		$node = $this->getNodeImpl($store, $id);
 		if ($node === NULL) {
 			$node = new Node($this, $store, $id);
@@ -120,7 +129,7 @@ class Session extends BaseObject {
 		$this->nodeCache[$node->__toString()] = $node;
 	}
 
-	private function getNodeImpl($store, $id) {
+	private function getNodeImpl(Store $store, $id) {
 		$result = NULL;
 		$nodeRef = $store->scheme . '://' . $store->address . '/' . $id;
 		if (array_key_exists($nodeRef, $this->nodeCache)) {
@@ -189,7 +198,7 @@ class Session extends BaseObject {
 		return $return;
 	}
 
-	public function query($store, $query, $language = 'lucene') {
+	public function query(Store $store, $query, $language = 'lucene') {
 		// TODO need to support paged queries
 		$result = $this->repositoryService->query(array(
 			"store" => $store->__toArray(),
@@ -213,6 +222,11 @@ class Session extends BaseObject {
 		return $this->_repository;
 	}
 
+	/**
+	 * Gets the namespace map.
+	 *
+	 * @return NamespaceMap
+	 */
 	public function getNamespaceMap() {
 		if ($this->_namespaceMap === NULL) {
 			$this->_namespaceMap = new NamespaceMap();
@@ -220,6 +234,11 @@ class Session extends BaseObject {
 		return $this->_namespaceMap;
 	}
 
+	/**
+	 * Gets the stores.
+	 *
+	 * @return Store[]
+	 */
 	public function getStores() {
 		if (!isset($this->_stores)) {
 			$this->_stores = array();

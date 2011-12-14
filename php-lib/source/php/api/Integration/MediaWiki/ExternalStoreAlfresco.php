@@ -98,6 +98,10 @@ function alfTitleMoveComplete(&$title, &$newtitle, &$user, $pageid, $redirid) {
 class ExternalStoreAlfresco {
 	//private $logger;
 	private $session;
+
+	/**
+	 * @var Store
+	 */
 	private $store;
 	private $wikiSpace;
 
@@ -175,6 +179,9 @@ class ExternalStoreAlfresco {
 
 	/**
 	 * Converts the url to the the node it relates to
+	 *
+	 * @param string $url
+	 * @return
 	 */
 	private function urlToNode($url) {
 		$values = explode('/', substr($url, 11));
@@ -183,6 +190,9 @@ class ExternalStoreAlfresco {
 
 	/**
 	 * Convert the url to the version it relates to
+	 *
+	 * @param string $url
+	 * @return Version
 	 */
 	private function urlToVersion($url) {
 		$values = explode('/', substr($url, 11));
@@ -190,7 +200,13 @@ class ExternalStoreAlfresco {
 		return new Version($this->session, $store, $values[5]);
 	}
 
-	public static function getTitle($titleObject) {
+	/**
+	 * Gets the title.
+	 *
+	 * @param Title $titleObject
+	 * @return string
+	 */
+	public static function getTitle(Title $titleObject) {
 		// Sort out the namespace of this article so we can figure out what the title is
 		$title = $titleObject->getText();
 		$ns = $titleObject->getNamespace();

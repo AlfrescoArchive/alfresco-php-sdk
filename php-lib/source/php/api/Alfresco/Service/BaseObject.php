@@ -43,7 +43,7 @@ class BaseObject {
 		return NULL;
 	}
 
-	protected function resultSetToNodes($session, $store, $resultSet) {
+	protected function resultSetToNodes($session, Store $store, $resultSet) {
 		$return = array();
 		if (isset($resultSet->rows)) {
 			if (is_array($resultSet->rows)) {

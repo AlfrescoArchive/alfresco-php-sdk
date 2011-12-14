@@ -36,13 +36,13 @@ class Version extends BaseObject {
 	/**
 	 * Constructor
 	 *
-	 * @param	$session		the session that the version is tied to
-	 * @param	@store			the store that the frozen node is stored in
-	 * @prarm	@id				the id of the frozen node
-	 * @param   @description	the description of the version
-	 * @param	@major			indicates whether this is a major or minor revision
+	 * @param $session the session that the version is tied to
+	 * @param Store store The store that the frozen node is stored in
+	 * @prarm @id the id of the frozen node
+	 * @param string description the description of the version
+	 * @param bool $major indicates whether this is a major or minor revision
 	 */
-	public function __construct($session, $store, $id, $description = NULL, $major = FALSE) {
+	public function __construct($session, Store $store, $id, $description = NULL, $major = FALSE) {
 		$this->_session = $session;
 		$this->_store = $store;
 		$this->_id = $id;

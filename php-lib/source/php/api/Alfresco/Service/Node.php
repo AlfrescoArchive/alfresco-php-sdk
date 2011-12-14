@@ -27,7 +27,9 @@ require_once('VersionHistory.php');
 require_once('Version.php');
 
 class Node extends BaseObject {
+	/** @var Session */
 	private $_session;
+	/** @var Store */
 	private $_store;
 	private $_id;
 	private $_type;
@@ -51,10 +53,10 @@ class Node extends BaseObject {
 	 * Constructor.
 	 *
 	 * @param $session
-	 * @param $store
+	 * @param Store $store
 	 * @param $id
 	 */
-	public function __construct($session, $store, $id) {
+	public function __construct($session, Store $store, $id) {
 		$this->_session = $session;
 		$this->_store = $store;
 		$this->_id = $id;
@@ -189,6 +191,14 @@ class Node extends BaseObject {
 	public function removeAssociation($association) {
 	}
 
+	/**
+	 * Creates a version.
+	 *
+	 * @param string $description
+	 * @param bool $major
+	 * @return Version
+	 * @throws RuntimeException
+	 */
 	public function createVersion($description = NULL, $major = FALSE) {
 		// We can only create a version if there are no outstanding changes for this node
 		if ($this->isDirty()) {
@@ -199,9 +209,11 @@ class Node extends BaseObject {
 
 		$client = WebServiceFactory::getAuthoringService($this->_session->repository->connectionUrl, $this->_session->ticket);
 		$result = $client->createVersion(
-			array("items" => array("nodes" => $this->__toArray()),
-				"comments" => array("name" => "description", "value" => $description),
-				"versionChildren" => FALSE)
+			array(
+				'items' => array('nodes' => $this->__toArray()),
+				'comments' => array('name' => 'description', 'value' => $description),
+				'versionChildren' => FALSE
+			)
 		);
 
 		// Clear the properties and aspects
@@ -218,6 +230,11 @@ class Node extends BaseObject {
 		return new Version($this->_session, new Store($this->_session, $versionStoreAddress, $versionStoreScheme), $versionId);
 	}
 
+	/**
+	 * Returns TRUE if this Node is dirty.
+	 *
+	 * @return bool
+	 */
 	private function isDirty() {
 		$result = true;
 		if (!$this->_isNewNode &&
@@ -523,6 +540,7 @@ class Node extends BaseObject {
 			foreach ($this->_properties as $name => $value)
 			{
 				if (($value instanceof ContentData) && $value->isDirty) {
+					/** @var $value ContentData */
 					$value->onBeforeSave($statements, $this->getWhereArray());
 				}
 			}
@@ -653,6 +671,7 @@ class Node extends BaseObject {
 		if ($this->_properties !== NULL) {
 			foreach ($this->_properties as $name => $value) {
 				if (($value instanceof ContentData) && $value->isDirty) {
+					/** @var $value ContentData */
 					$value->onAfterSave();
 				}
 			}
