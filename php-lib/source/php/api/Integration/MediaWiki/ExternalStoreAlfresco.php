@@ -143,6 +143,10 @@ class ExternalStoreAlfresco {
 	 * @return string
 	 */
 	public function &store($store, $data) {
+		if (isset($GLOBALS['alfImpersonateUsers']) && strtolower($GLOBALS['alfUser']) !== strtolower($_SESSION['wsUserName'])) {
+			$this->impersonate(strtolower($_SESSION['wsUserName']));
+		}
+
 		$url = $_SESSION["lastVersionUrl"];
 		/** @var $node Node */
 		$node = null;
@@ -175,6 +179,24 @@ class ExternalStoreAlfresco {
 
 		$result = 'alfresco://' . $node->store->scheme . '/' . $node->store->address . '/' . $node->id . '/' . $version->store->scheme . '/' . $version->store->address . '/' . $version->id;
 		return $result;
+	}
+
+	/**
+	 * Impersonates default Alfresco user with current MediaWiki user.
+	 *
+	 * @param string $userName
+	 * @return void
+	 */
+	private function impersonate($userName) {
+		if (isset($GLOBALS['alfImpersonateUsers'][$userName])) {
+			$impersonateUserName = $GLOBALS['alfImpersonateUsers'][$userName]['user'];
+			$impersonatePassword = $GLOBALS['alfImpersonateUsers'][$userName]['password'];
+
+			// Recreate the session
+			$repository = new Repository($GLOBALS['alfURL']);
+			$ticket = $repository->authenticate($impersonateUserName, $impersonatePassword);
+			$this->session = $repository->createSession($ticket);
+		}
 	}
 
 	/**

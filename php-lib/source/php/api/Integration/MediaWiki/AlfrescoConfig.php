@@ -29,8 +29,22 @@ $alfWikiStore = 'workspace://SpacesStore';
 /** Path to the space the contains the wiki content **/
 $alfWikiSpace = 'app:company_home/cm:Wiki';
 
-/** User credentails used to connect to Alfresco with **/
+/** User credentials used to connect to Alfresco with **/
 $alfUser = 'admin';
 $alfPassword = 'admin';
+
+/** Impersonation user credentials mapping **/
+/*
+$alfImpersonateUsers = array(
+	'<lowercase-mediawiki-username-1>' => array(
+		'user' => '<alfresco-user-1>',
+		'password' => ''
+	),
+	'<lowercase-mediawiki-username-2>' => array(
+		'user' => '<alfresco-user-2>',
+		'password' => ''
+	),
+);
+*/
 
 ?>
