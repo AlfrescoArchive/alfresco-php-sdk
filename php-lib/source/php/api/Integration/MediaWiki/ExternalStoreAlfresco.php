@@ -113,7 +113,12 @@ class ExternalStoreAlfresco {
 
 		// Create the session
 		$repository = new Repository($GLOBALS['alfURL']);
-		$ticket = $repository->authenticate($GLOBALS['alfUser'], $GLOBALS['alfPassword']);
+		try {
+			$ticket = $repository->authenticate($GLOBALS['alfUser'], $GLOBALS['alfPassword']);
+		} catch (Exception $e) {
+			die('Could not authenticate user "' . $GLOBALS['alfUser'] . '"');
+		}
+
 		$this->session = $repository->createSession($ticket);
 
 		// Get the store

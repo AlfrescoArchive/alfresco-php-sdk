@@ -54,10 +54,14 @@ class Repository extends BaseObject {
 		// TODO need to handle exceptions!
 
 		$authenticationService = WebServiceFactory::getAuthenticationService($this->_connectionUrl);
-		$result = $authenticationService->startSession(array(
-			"username" => $userName,
-			"password" => $password
-		));
+		try {
+			$result = $authenticationService->startSession(array(
+				"username" => $userName,
+				"password" => $password
+			));
+		} catch (SoapFault $e) {
+			throw new RuntimeException('Could not authenticate user "' . $userName . '"', 1326448905);
+		}
 
 		// Get the ticket and sessionId
 		$ticket = $result->startSessionReturn->ticket;
