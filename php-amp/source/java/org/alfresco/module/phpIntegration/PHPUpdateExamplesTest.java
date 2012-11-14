@@ -23,38 +23,69 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.alfresco.repo.importer.ImporterComponent;
+import org.alfresco.repo.transaction.RetryingTransactionHelper;
 import org.alfresco.service.cmr.repository.StoreRef;
 import org.alfresco.service.cmr.view.ImporterBinding;
 import org.alfresco.service.cmr.view.Location;
 import org.alfresco.service.namespace.QName;
-import org.alfresco.util.BaseSpringTest;
+import org.alfresco.util.ApplicationContextHelper;
+import org.alfresco.util.RetryingTransactionHelperTestCase;
+import org.springframework.context.ApplicationContext;
 
 /**
  * @author Roy Wetherall
  */
-public class PHPUpdateExamplesTest extends BaseSpringTest
+public class PHPUpdateExamplesTest extends RetryingTransactionHelperTestCase
 {
+	private ApplicationContext applicationContext;
+	
+	@Override
+    protected void setUp() throws Exception
+    {
+        // Get the application context
+        applicationContext = ApplicationContextHelper.getApplicationContext();
+    }
+	
+	@Override
+	public RetryingTransactionHelper getRetryingTransactionHelper() 
+	{
+		return (RetryingTransactionHelper)applicationContext.getBean("retryingTransactionHelper");
+	}
+	
     public void testUpdateTemplatesAndScripts()
-    {                       
-        importFile("alfresco/module/phpIntegration/script/script-import.xml", "/app:company_home/app:dictionary/app:scripts");
-        importFile("alfresco/module/phpIntegration/template/template-import.xml", "/app:company_home/app:dictionary/app:content_templates");
-        
-        setComplete();
-        endTransaction();
+    {        
+    	doTestInTransaction(new Test<Void>()
+        {
+            public Void run()
+            {
+            	importFile("alfresco/module/phpIntegration/script/script-import.xml", "/app:company_home/app:dictionary/app:scripts");
+            	importFile("alfresco/module/phpIntegration/template/template-import.xml", "/app:company_home/app:dictionary/app:content_templates");
+            	
+            	return null;
+            }
+        }, "admin");
     }
     
-    private void importFile(String file, String destination)
-    {        
-        ImporterComponent importer = (ImporterComponent)this.applicationContext.getBean("importerComponent");
-        
-        InputStream viewStream = getClass().getClassLoader().getResourceAsStream(file);
-        InputStreamReader inputReader = new InputStreamReader(viewStream);
-        BufferedReader reader = new BufferedReader(inputReader);
-
-        Location location = new Location(new StoreRef(StoreRef.PROTOCOL_WORKSPACE, "SpacesStore"));
-        location.setPath(destination);
-        
-        importer.importView(reader, location, new TempBinding(), null);
+    private void importFile(final String file, final String destination)
+    {   
+    	doTestInTransaction(new Test<Void>()
+    	{
+	        public Void run()
+	        {     
+		        ImporterComponent importer = (ImporterComponent)applicationContext.getBean("importerComponent");
+		        
+		        InputStream viewStream = getClass().getClassLoader().getResourceAsStream(file);
+		        InputStreamReader inputReader = new InputStreamReader(viewStream);
+		        BufferedReader reader = new BufferedReader(inputReader);
+		
+		        Location location = new Location(new StoreRef(StoreRef.PROTOCOL_WORKSPACE, "SpacesStore"));
+		        location.setPath(destination);
+		        
+		        importer.importView(reader, location, new TempBinding(), null);
+		        
+		        return null;
+	        }
+    	}, "admin");
     }
     
     private static class TempBinding implements ImporterBinding

@@ -1,0 +1,7 @@
+bin/
+build/
+config/
+explodedDeps/
+.gradle/
+.settings/
+alfresco.log
